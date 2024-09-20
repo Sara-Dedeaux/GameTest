@@ -10,8 +10,54 @@ const c = canvas.getContext('2d')
 canvas.width = 1024
 canvas.height = 576
 
-console.log(c)
+class Boundry {
+    static width = 48
+    static height = 48
+    constructor({position}){
+        this.position = position
+        this.width = 48
+        this.height = 48
+    }
 
+    draw(){
+        c.fillStyle = 'red'
+        c.fillRect(this.position.x, this.position.y, this.width, this.height)
+    }
+}
+
+
+
+const boundaries = [];
+const offset = {
+    x: -70,
+    y: -200
+}
+
+
+const collisionsMapArr = [];
+//CREATE 2D ARRAY USING NESTED LOOPS TO PREP FOR COLLISION DETECTION -70 comes from 70 tiles set by map
+// for (let i = 0; i < collisions.length; i += 70) {
+    
+//     collisionsMapArr.push(collisions.slice( i, 70 + i))
+//     console.log(collisionsMapArr)
+    
+// }
+
+collisionsMapArr.forEach((row, i) => {
+    row.forEach ((Symbol, j) => {
+        if(Symbol === 1025)
+        boundaries.push(
+            new Boundry({
+                position:{
+                    x: j * Boundry.width + offset.x,
+                    y: i * Boundry.height + offset.y
+                }
+            })
+        )
+    })
+});
+
+console.log(boundaries)
 //.FILLRECT SETS (X COORD, Y COORD, WIDTH, HEIGHT)
 c.fillRect(0,0,canvas.width, canvas.height)
 
@@ -20,7 +66,7 @@ c.fillStyle = "white"
 
 //SET NEW IMAGE ELEMENT CALLED mapImg 
 const mapImg= new Image()
-mapImg.src = "./img/testExampleTileSetZoomed.png"
+mapImg.src = "./img/GameMap.png"
 console.log(mapImg)
 
 //CREATE NEW IMAGE CALLED playerImage 
@@ -28,7 +74,8 @@ const playerImage= new Image()
 playerImage.src = "./img/playerDown.png"
 console.log(playerImage)
 
-
+//pulling data from collisionMap.js
+console.log(collisions)
 
 //.ON-LOAD WORKS LIKE ASYNC TO ALLOW FOR IMAGE TO LOAD BEFORE IT IS "DRAWN" ONTO THE CANVAS - OTHERWISE THE CODE RUNS BEFORE THE IMG IS LOADED AND NOTHING APPEARS
 
@@ -51,10 +98,11 @@ class Sprite {
     }
 }
 
+
 const background = new Sprite({
     position: {
-        x:-770,
-        y:-495
+        x:offset.x,
+        y:offset.y
     },
     image: mapImg
 })
@@ -77,7 +125,11 @@ const keys = {
 function animate(){
     window.requestAnimationFrame(animate)
     background.draw()
-
+    boundaries.forEach(boundary => {
+        // boundary.draw
+        console.log(boundary)
+        
+    })
     c.drawImage(
         playerImage, 
         //to crop player image sprites
