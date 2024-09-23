@@ -1,9 +1,88 @@
-<style>
-    body{
-        background-color: black;
-    }
-</style>
+<!DOCTYPE html>
+<html lang="en">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <h1>Hello World</h1>
+</head>
+<body>
 
-<canvas></canvas>
+
+    <div class="mobilePlay container container-fluid text-center">
+        <div class="row">
+            <h1>Game Name</h1>
+        </div>
+        <div class="row">
+            <p>Insturctions: Lorem ipsum dolor sit amet consectetur, adipisicing elit. Id, repellat.</p>
+        </div>
+
+        <div class="row">
+
+            <div class="gameMap col-10">
+                <canvas></canvas>
+            </div>
+
+            <div class="navCircle container container-fluid col-2">
+                <div class="row">
+                
+                    <div class="emptyDiv col-4"></div>
+        
+                    <div class="navButtons col-4 container">
+        
+                        <div class="row">
+                            <div class="emptyDiv col-4"></div>
+                            <div class="upBtn col-4 ">
+                                <img src="img/arrow_upward_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.png" class="img-fluid" id="up" alt="arrow up" >
+        
+                            </div>
+                            <div class="emptyDiv col-4"></div>
+                        </div>
+                        <div class="row">
+                            <div class="leftBtn col-4">
+                                <img src="img/arrow_left_alt_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.png" class="img-fluid" id="up" alt="arrow up">
+                            </div>
+                            <div class="emptyDiv col-4"></div>
+                            <div class="rightBtn col-4">
+                                
+                                <img src="img/arrow_right_alt_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.png" class="img-fluid" id="up" alt="arrow up">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="emptyDiv col-4"></div>
+                            <div class="downBtn col-4">
+                                <img src="img/arrow_downward_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.png" class="img-fluid" id="up" alt="arrow up">
+                            </div>
+                            <div class="emptyDiv col-4"></div>
+                        </div>
+        
+                    </div><div class="emptyDiv col-4"></div>
+        
+                 </div>
+        
+            </div>
+
+            
+
+
+        </div>
+
+
+    </div>
+
+    
+        
+    
+
+   
+    
+</body>
+
+</html>
+
+
+
 <script src="collisionMap.js"></script>
 <script src="app.js"></script>
