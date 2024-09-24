@@ -4,6 +4,8 @@
 const canvas = document.querySelector('canvas');
 const c = canvas.getContext('2d')
 
+
+
 //SETTING THE WIDTH AND HEIGHT OF THE CANVAS
 canvas.width = 1024
 canvas.height = 576
@@ -69,6 +71,16 @@ for (let i = 0; i < collisions.length; i += 70) {
     collisionsMapArr.push(collisions.slice( i, 70 + i))
 }
 
+const battleZonesMap = [];
+for (let i = 0; i < battleZonesData.length; i += 70) {
+    battleZonesMap.push(battleZonesData.slice( i, 70 + i))
+}
+
+console.log(battleZonesMap)
+
+
+
+
 
 
 const boundaries = [];
@@ -87,6 +99,23 @@ collisionsMapArr.forEach((row, i)=> {
     })
 });
 
+const battleZones = []; 
+
+battleZonesMap.forEach((row, i)=> {
+    row.forEach ((symbol, j) => {
+        if(symbol === 1025)
+        battleZones.push(
+            new Boundary({
+                position:{
+                    x: j * Boundary.width + offset.x,
+                    y: i * Boundary.height + offset.y
+                }
+            })
+        )
+    })
+});
+
+console.log(battleZones)
 
 const keys = {
     w: {
@@ -112,7 +141,7 @@ const downBtn=document.getElementById("down");
 
 
 
-const movables = [background, ...boundaries ]//...moves all elements seperately from boundaries array into movables- instead of creating 2-d array
+const movables = [background, ...boundaries, ...battleZones ]//...moves all elements seperately from boundaries array into movables- instead of creating 2-d array
 
 function rectangularCollision({rectangle1, rectangle2}){
     return (rectangle1.position.x + rectangle1.width >= rectangle2.position.x && rectangle1.position.x <= rectangle2.position.x + rectangle2.width && rectangle1.position.y <= rectangle2.position.y + rectangle2.height && rectangle1.position.y + rectangle1.height >= rectangle2.position.y)
@@ -131,8 +160,42 @@ function animate(){
         boundary.draw()
         
     })
+
+    battleZones.forEach((battlezone) => {
+        battlezone.draw()
+    })
     
     player.draw()
+
+    if (keys.w.pressed || keys.a.pressed || keys.s.pressed || keys.d.pressed || upBtnPressed === true || downBtnPressed === true || leftBtnPressed === true || rightBtnPressed === true) {
+        for (let i = 0; i < battleZones.length; i++) {
+            const battlezone = battleZones[i];
+            const overlappingArea = 
+            (Math.min(
+                player.position.x + player.width, 
+                battlezone.position.x + battlezone.width
+            ) - 
+            Math.max(player.position.x, battlezone.position.x)) * 
+            (Math.min(
+                player.position.y + player.height, 
+                battlezone.position.y + battlezone.height
+            ) -
+            Math.max(player.position.y, battlezone.position.y))
+
+            if (
+                rectangularCollision({
+                    rectangle1: player,
+                    rectangle2: battlezone
+                }) &&
+                overlappingArea > (player.width * player.height) / 2
+            ) {
+                console.log("battle zone Collision")
+                break
+            }
+            
+        }
+
+    }
     
     //DETERMINE BOUNDARIES AND TURN OFF MOVEMENT IF PLAYER COLLIDES WITH BARRIERS
     let moving = true
@@ -140,7 +203,7 @@ function animate(){
     if (keys.w.pressed && lastKey === 'w' || upBtnPressed=== true) {
         player.moving = true 
         player.image = player.sprites.up
-        console.log(player.sprites.up)
+       
 
         for (let i = 0; i < boundaries.length; i++) {
             const boundary = boundaries[i];
@@ -162,6 +225,8 @@ function animate(){
             }
             
         }
+
+       
 
         
         if (moving)
