@@ -6,27 +6,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <h1>Hello World</h1>
 </head>
 <body>
 
 
-    <div class="mobilePlay container container-fluid text-center">
+    <div class="mobilePlay container container-fluid text-center ">
         <div class="row">
             <h1>Game Name</h1>
         </div>
         <div class="row">
             <p>Insturctions: Lorem ipsum dolor sit amet consectetur, adipisicing elit. Id, repellat.</p>
         </div>
-        
+        <div class="row d-block d-sm-none">
+            <p>Rotate to landscape or expand browers size to play</p>
+        </div>
+
+
+
 
         <div class="row">
 
-            <div class="gameMap col-10">
+            <div class="gameMap col-10 d-none d-sm-block ">
                 <canvas></canvas>
             </div>
 
-            <div class="navCircle container container-fluid col-2">
+            <div class="navCircle container container-fluid col-2 d-none d-md-block">
                 <div class="row">
                     <div class="col-4"></div>
                     <div class="up col-4">
@@ -80,6 +84,6 @@
 </html>
 
 
-
 <script src="collisionMap.js"></script>
+<script src="classes.js"></script>
 <script src="app.js"></script>

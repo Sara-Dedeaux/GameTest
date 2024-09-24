@@ -9,8 +9,17 @@ canvas.width = 1024
 canvas.height = 576
 
 //CREATE NEW IMAGE CALLED playerImage 
-const playerImage= new Image()
-playerImage.src = "./img/playerDown.png"
+const playerDownImage= new Image()
+playerDownImage.src = "./img/playerDown.png"
+
+const playerUpImage= new Image()
+playerUpImage.src = "./img/playerUp.png"
+
+const playerLeftImage= new Image()
+playerLeftImage.src = "./img/playerLeft.png"
+
+const playerRightImage= new Image()
+playerRightImage.src = "./img/playerRight.png"
 
 
 
@@ -19,36 +28,7 @@ playerImage.src = "./img/playerDown.png"
 const mapImg= new Image()
 mapImg.src = "./img/GameMap.png"
 
-class Sprite {
-constructor({position, velocity, image, frames = { max: 1 }}) {
-        this.position = position
-        this.image = image
-        this.frames = frames
-        this.image.onload = () => {
 
-            this.width = this.image.width / this.frames.max
-            
-            this.height = this.image.height
-
-        }
-    }
-
-    draw(){
-      
-        c.drawImage(
-            this.image, 
-            0, //x-coord
-            0, //y-coord
-            //width
-            this.image.width / this.frames.max,
-            this.image.height, 
-            this.position.x,
-            this.position.y,
-            this.image.width / this.frames.max,
-            this.image.height
-        )
-    }
-}
 
 
 //ESTABLISH ARRAY FOR BOUNDARIES
@@ -58,9 +38,15 @@ const player = new Sprite({
         x: canvas.width / 2 - 192 / 4 /2, 
         y: canvas.height / 2 - 68 / 2,
     }, 
-    image: playerImage,
+    image: playerDownImage,
     frames: {
         max:4
+    },
+    sprites: {
+        up: playerUpImage,
+        left: playerLeftImage,
+        right: playerRightImage,
+        down: playerDownImage
     }
 })
 
@@ -83,21 +69,7 @@ for (let i = 0; i < collisions.length; i += 70) {
     collisionsMapArr.push(collisions.slice( i, 70 + i))
 }
 
-class Boundary {
-    
-    static width = 48
-    static height = 48
-    constructor({position}){
-        this.position = position
-        this.width = 48
-        this.height = 48
-    }
 
-    draw(){
-        c.fillStyle = 'rgba(255,0,0,0)'
-        c.fillRect(this.position.x, this.position.y, this.width, this.height)
-    }
-}
 
 const boundaries = [];
 
@@ -152,19 +124,24 @@ function animate(){
 
 
     
-    let moving = true
     window.requestAnimationFrame(animate)
     background.draw()
-
+    
     boundaries.forEach((boundary) => {
         boundary.draw()
-              
+        
     })
-
+    
     player.draw()
-
-  //DETERMINE BOUNDARIES AND TURN OFF MOVEMENT IF PLAYER COLLIDES WITH BARRIERS
+    
+    //DETERMINE BOUNDARIES AND TURN OFF MOVEMENT IF PLAYER COLLIDES WITH BARRIERS
+    let moving = true
+    player.moving = false; 
     if (keys.w.pressed && lastKey === 'w' || upBtnPressed=== true) {
+        player.moving = true 
+        player.image = player.sprites.up
+        console.log(player.sprites.up)
+
         for (let i = 0; i < boundaries.length; i++) {
             const boundary = boundaries[i];
 
@@ -194,6 +171,9 @@ function animate(){
     }
     
     else if(keys.s.pressed && lastKey === 's' || downBtnPressed === true) {
+        player.moving = true 
+        player.image = player.sprites.down
+
         for (let i = 0; i < boundaries.length; i++) {
             const boundary = boundaries[i];
 
@@ -218,7 +198,11 @@ function animate(){
         if (moving)
         movables.forEach(movable => {movable.position.y -= 3})
 
-    } else if(keys.d.pressed && lastKey === 'd' || rightBtnPressed === true) {
+    } else if(keys.d.pressed && lastKey === 'd' || rightBtnPressed === true)
+        {
+            player.moving = true 
+            player.image = player.sprites.right
+
         for (let i = 0; i < boundaries.length; i++) {
             const boundary = boundaries[i];
 
@@ -243,6 +227,10 @@ function animate(){
         if (moving)
         movables.forEach(movable => {movable.position.x -= 3})
      }else if(keys.a.pressed && lastKey === 'a' || leftBtnPressed === true) {
+        player.moving = true 
+        player.image = player.sprites.left
+
+
         for (let i = 0; i < boundaries.length; i++) {
             const boundary = boundaries[i];
 
