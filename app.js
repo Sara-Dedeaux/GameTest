@@ -116,10 +116,6 @@ collisionsMapArr.forEach((row, i)=> {
 });
 
 
-
-
-
-
 const keys = {
     w: {
         pressed:false
@@ -135,8 +131,7 @@ const keys = {
     }
 }
 
-
-
+//MOBILE BUTTONS
 const upBtn= document.getElementById("up"); 
 const leftBtn=document.getElementById("left");
 const rightBtn=document.getElementById("right");
@@ -198,7 +193,7 @@ function animate(){
         })
     }
     
-    else if(keys.s.pressed && lastKey === 's' || downBtnPressed=== true) {
+    else if(keys.s.pressed && lastKey === 's' || downBtnPressed === true) {
         for (let i = 0; i < boundaries.length; i++) {
             const boundary = boundaries[i];
 
@@ -274,73 +269,44 @@ function animate(){
     }
 }
 
-
-//ESTABLISH CONTROLS FOR MOBILE 
+//MOBILE CONTROL CHECKS
 let upBtnPressed; 
 let leftBtnPressed;
 let rightBtnPressed; 
 let downBtnPressed; 
 
 
+//ESTABLISH CONTROLS FOR MOBILE 
 upBtn.addEventListener("mousedown", () => {
-    console.log("top arrow down")
-
     upBtnPressed= true; 
-    
-    console.log(upBtnPressed)
-
-
 })
 
 upBtn.addEventListener("mouseup", () => {
-    console.log("top arrow released")
     upBtnPressed= false; 
-    console.log(upBtnPressed)
 })
 
 leftBtn.addEventListener("mousedown", () => {
-    console.log("top arrow down")
-
     leftBtnPressed= true; 
-    console.log(upBtnPressed)
-
-
 })
 
 leftBtn.addEventListener("mouseup", () => {
-    console.log("top arrow released")
     leftBtnPressed= false; 
-    console.log(upBtnPressed)
 })
 
 rightBtn.addEventListener("mousedown", () => {
-    console.log("top arrow down")
-
     rightBtnPressed= true; 
-    console.log(upBtnPressed)
-
-
 })
 
 rightBtn.addEventListener("mouseup", () => {
-    console.log("top arrow released")
     rightBtnPressed= false; 
-    console.log(upBtnPressed)
 })
 
 downBtn.addEventListener("mousedown", () => {
-    console.log("top arrow down")
-
     downBtnPressed= true; 
-    console.log(upBtnPressed)
-
-
 })
 
 downBtn.addEventListener("mouseup", () => {
-    console.log("top arrow released")
     downBtnPressed= false; 
-    console.log(upBtnPressed)
 })
 
 
