@@ -143,6 +143,8 @@ const rightBtn=document.getElementById("right");
 const downBtn=document.getElementById("down");
 
 
+
+
 const movables = [background, ...boundaries ]//...moves all elements seperately from boundaries array into movables- instead of creating 2-d array
 
 function rectangularCollision({rectangle1, rectangle2}){
@@ -284,6 +286,7 @@ upBtn.addEventListener("mousedown", () => {
     console.log("top arrow down")
 
     upBtnPressed= true; 
+    
     console.log(upBtnPressed)
 
 
