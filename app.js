@@ -29,8 +29,6 @@ constructor({position, velocity, image, frames = { max: 1 }}) {
             this.width = this.image.width / this.frames.max
             
             this.height = this.image.height
-            console.log(this.width)
-            console.log(this.height)
 
         }
     }
@@ -139,8 +137,10 @@ const keys = {
 
 
 
-
-
+const upBtn= document.getElementById("up"); 
+const leftBtn=document.getElementById("left");
+const rightBtn=document.getElementById("right");
+const downBtn=document.getElementById("down");
 
 
 const movables = [background, ...boundaries ]//...moves all elements seperately from boundaries array into movables- instead of creating 2-d array
@@ -148,21 +148,26 @@ const movables = [background, ...boundaries ]//...moves all elements seperately 
 function rectangularCollision({rectangle1, rectangle2}){
     return (rectangle1.position.x + rectangle1.width >= rectangle2.position.x && rectangle1.position.x <= rectangle2.position.x + rectangle2.width && rectangle1.position.y <= rectangle2.position.y + rectangle2.height && rectangle1.position.y + rectangle1.height >= rectangle2.position.y)
 }
+
 function animate(){
+
+
+
+
+    
     let moving = true
     window.requestAnimationFrame(animate)
     background.draw()
 
     boundaries.forEach((boundary) => {
         boundary.draw()
-        
-       
-        
+              
     })
 
     player.draw()
 
-    if (keys.w.pressed && lastKey === 'w') {
+  //DETERMINE BOUNDARIES AND TURN OFF MOVEMENT IF PLAYER COLLIDES WITH BARRIERS
+    if (keys.w.pressed && lastKey === 'w' || upBtnPressed=== true) {
         for (let i = 0; i < boundaries.length; i++) {
             const boundary = boundaries[i];
 
@@ -178,14 +183,12 @@ function animate(){
                     } 
                 })
             ) {
-                console.log("colliding")
                 moving = false
                 break
             }
             
         }
 
-        console.log(moving)
         
         if (moving)
         movables.forEach(movable => {
@@ -193,7 +196,7 @@ function animate(){
         })
     }
     
-    else if(keys.s.pressed && lastKey === 's') {
+    else if(keys.s.pressed && lastKey === 's' || downBtnPressed=== true) {
         for (let i = 0; i < boundaries.length; i++) {
             const boundary = boundaries[i];
 
@@ -209,7 +212,6 @@ function animate(){
                     } 
                 })
             ) {
-                console.log("colliding");
                 moving = false;
                 break;
             }
@@ -218,7 +220,8 @@ function animate(){
         
         if (moving)
         movables.forEach(movable => {movable.position.y -= 3})
-    } else if(keys.d.pressed && lastKey === 'd') {
+
+    } else if(keys.d.pressed && lastKey === 'd' || rightBtnPressed === true) {
         for (let i = 0; i < boundaries.length; i++) {
             const boundary = boundaries[i];
 
@@ -234,7 +237,6 @@ function animate(){
                     } 
                 })
             ) {
-                console.log("colliding");
                 moving = false;
                 break;
             }
@@ -243,7 +245,7 @@ function animate(){
 
         if (moving)
         movables.forEach(movable => {movable.position.x -= 3})
-     }else if(keys.a.pressed && lastKey === 'a') {
+     }else if(keys.a.pressed && lastKey === 'a' || leftBtnPressed === true) {
         for (let i = 0; i < boundaries.length; i++) {
             const boundary = boundaries[i];
 
@@ -259,7 +261,6 @@ function animate(){
                     } 
                 })
             ) {
-                console.log("colliding");
                 moving = false;
                 break;
             }
@@ -272,10 +273,77 @@ function animate(){
 }
 
 
+//ESTABLISH CONTROLS FOR MOBILE 
+let upBtnPressed; 
+let leftBtnPressed;
+let rightBtnPressed; 
+let downBtnPressed; 
 
 
+upBtn.addEventListener("mousedown", () => {
+    console.log("top arrow down")
+
+    upBtnPressed= true; 
+    console.log(upBtnPressed)
+
+
+})
+
+upBtn.addEventListener("mouseup", () => {
+    console.log("top arrow released")
+    upBtnPressed= false; 
+    console.log(upBtnPressed)
+})
+
+leftBtn.addEventListener("mousedown", () => {
+    console.log("top arrow down")
+
+    leftBtnPressed= true; 
+    console.log(upBtnPressed)
+
+
+})
+
+leftBtn.addEventListener("mouseup", () => {
+    console.log("top arrow released")
+    leftBtnPressed= false; 
+    console.log(upBtnPressed)
+})
+
+rightBtn.addEventListener("mousedown", () => {
+    console.log("top arrow down")
+
+    rightBtnPressed= true; 
+    console.log(upBtnPressed)
+
+
+})
+
+rightBtn.addEventListener("mouseup", () => {
+    console.log("top arrow released")
+    rightBtnPressed= false; 
+    console.log(upBtnPressed)
+})
+
+downBtn.addEventListener("mousedown", () => {
+    console.log("top arrow down")
+
+    downBtnPressed= true; 
+    console.log(upBtnPressed)
+
+
+})
+
+downBtn.addEventListener("mouseup", () => {
+    console.log("top arrow released")
+    downBtnPressed= false; 
+    console.log(upBtnPressed)
+})
+
+
+    
+//ESTABLISH CONTROLS FOR FULL-SCREEN
 let lastKey = ''
-//ESTABLISH CONTROLS
 window.addEventListener('keydown', (e)=>{
     
     switch (e.key) {
