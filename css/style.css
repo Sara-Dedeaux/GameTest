@@ -12,3 +12,30 @@ canvas{
     width: 100%;
 }
 
+.gameMap {
+    display: inline-block;
+    position: relative;
+    background-color: black;
+}
+
+.gameMapDiv {
+    background-color: black;
+    opacity: 0;
+    pointer-events: none;
+
+    
+    position:absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    
+    
+}
+
+.instructions {
+    background-color: red;
+    position: relative;
+    display: inline-block;
+}

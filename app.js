@@ -1,8 +1,25 @@
 
+//Create function to generate question box
+
+function userDecision () {
+    const instructionBox = document.createElement("div")
+    instructionBox.classList.add("instructions")
+
+    const parentDiv = document.getElementById("overlappingDiv");
+
+    parentDiv.append(instructionBox)
+
+
+
+}
+
+
+
 //TIME OF VIDEO: 2:54:38
 
 const canvas = document.querySelector('canvas');
 const c = canvas.getContext('2d')
+
 
 
 
@@ -145,6 +162,12 @@ const movables = [background, ...boundaries, ...battleZones ]//...moves all elem
 
 function rectangularCollision({rectangle1, rectangle2}){
     return (rectangle1.position.x + rectangle1.width >= rectangle2.position.x && rectangle1.position.x <= rectangle2.position.x + rectangle2.width && rectangle1.position.y <= rectangle2.position.y + rectangle2.height && rectangle1.position.y + rectangle1.height >= rectangle2.position.y)
+
+    
+}
+
+const battle = {
+    initiated: false
 }
 
 function animate(){
@@ -153,7 +176,8 @@ function animate(){
 
 
     
-    window.requestAnimationFrame(animate)
+   const animationID = window.requestAnimationFrame(animate)
+   console.log(animationID)
     background.draw()
     
     boundaries.forEach((boundary) => {
@@ -167,6 +191,20 @@ function animate(){
     
     player.draw()
 
+    let moving = true
+    player.moving = false; 
+    
+    
+    const cutScreen =  document.querySelector(".gameMapDiv")
+    
+   
+    
+
+    //this prevents player from continuing to move once a battle is activated
+    console.log(animationID)
+    if (battle.initiated) return
+    
+    //activate a battle
     if (keys.w.pressed || keys.a.pressed || keys.s.pressed || keys.d.pressed || upBtnPressed === true || downBtnPressed === true || leftBtnPressed === true || rightBtnPressed === true) {
         for (let i = 0; i < battleZones.length; i++) {
             const battlezone = battleZones[i];
@@ -187,19 +225,31 @@ function animate(){
                     rectangle1: player,
                     rectangle2: battlezone
                 }) &&
-                overlappingArea > (player.width * player.height) / 2
+                overlappingArea > (player.width * player.height) / 2 &&
+                Math.random() < 0.01
             ) {
-                console.log("battle zone Collision")
-                break
+                console.log("activate battle")
+                battle.initiated = true
+                
+                if (battle.initiated){
+                    cutScreen.style.opacity = .5;
+
+                    //deactivate current animation loop 
+                    window.cancelAnimationFrame(animationID)
+                  
+                    //activate a new animation loop 
+                    animateBattle()
+                }
             }
+
+
             
         }
 
     }
     
     //DETERMINE BOUNDARIES AND TURN OFF MOVEMENT IF PLAYER COLLIDES WITH BARRIERS
-    let moving = true
-    player.moving = false; 
+    
     if (keys.w.pressed && lastKey === 'w' || upBtnPressed=== true) {
         player.moving = true 
         player.image = player.sprites.up
@@ -320,6 +370,11 @@ function animate(){
         if (moving)
         movables.forEach(movable => {movable.position.x += 3})
     }
+}
+
+function animateBattle() {
+    window.requestAnimationFrame(animateBattle)
+    console.log('animating battle')
 }
 
 //MOBILE CONTROL CHECKS
