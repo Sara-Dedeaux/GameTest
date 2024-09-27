@@ -39,3 +39,24 @@ canvas{
     position: relative;
     display: inline-block;
 }
+
+.battleScene {
+    background-color: white;
+    height: 140px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border: 4px, black, solid ;
+    color: black;
+}
+
+.battleScene h1 {
+    font-size: 20px
+}
+
+.wormBetOff{
+
+    display: none;
+
+}

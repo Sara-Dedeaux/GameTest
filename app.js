@@ -1,17 +1,5 @@
 
-//Create function to generate question box
 
-function userDecision () {
-    const instructionBox = document.createElement("div")
-    instructionBox.classList.add("instructions")
-
-    const parentDiv = document.getElementById("overlappingDiv");
-
-    parentDiv.append(instructionBox)
-
-
-
-}
 
 
 
@@ -170,6 +158,7 @@ const battle = {
     initiated: false
 }
 
+const cutScreen =  document.querySelector(".gameMapDiv")
 function animate(){
 
 
@@ -195,7 +184,6 @@ function animate(){
     player.moving = false; 
     
     
-    const cutScreen =  document.querySelector(".gameMapDiv")
     
    
     
@@ -226,7 +214,7 @@ function animate(){
                     rectangle2: battlezone
                 }) &&
                 overlappingArea > (player.width * player.height) / 2 &&
-                Math.random() < 0.01
+                Math.random() < 0.1
             ) {
                 console.log("activate battle")
                 battle.initiated = true
@@ -236,9 +224,11 @@ function animate(){
 
                     //deactivate current animation loop 
                     window.cancelAnimationFrame(animationID)
+
+                    
                   
                     //activate a new animation loop 
-                    animateBattle()
+                    wormCatchGame()
                 }
             }
 
@@ -372,9 +362,190 @@ function animate(){
     }
 }
 
-function animateBattle() {
-    window.requestAnimationFrame(animateBattle)
-    console.log('animating battle')
+
+
+
+const battleBackgroundImg = new Image(); 
+battleBackgroundImg.src = "img/ground-7855872_1280.png"
+
+const battleBackground = new Sprite({
+    position: {
+        x: 0,
+        y: 0
+    }, 
+    image: battleBackgroundImg
+})
+
+const shovelImg = new Image();
+  shovelImg.src = "img/shovel-test.png"
+    shovelImg.classList.add("wormImgs")
+ 
+
+  
+ 
+const shovel = new Sprite ({
+    
+    position: {
+        x: 300,
+        y: 50
+    },
+    
+    image: shovelImg
+
+})
+
+const dirtImg = new Image();
+dirtImg.src = "img/dirt-test.png"
+dirtImg.classList.add("wormImgs")
+
+const dirt = new Sprite ({
+
+position: {
+    x: 300,
+    y: 150
+},
+
+image: dirtImg
+
+})
+
+const frogImg = new Image();
+frogImg.src = "img/frog-test.png"
+frogImg.classList.add("wormImgs")
+
+const frog = new Sprite ({
+
+position: {
+    x: 300,
+    y: 150
+},
+
+image: frogImg
+
+})
+
+const wormImg = new Image();
+wormImg.src = "img/worm-test2.png"
+wormImg.classList.add("wormImgs")
+
+const worm = new Sprite ({
+
+position: {
+    x: 100,
+    y: 0
+},
+
+image: wormImg
+
+})
+
+
+let digOutcome = 4;
+let wormCount = 0; 
+function gameInstructions () {
+
+  const  instructionDiv = document.createElement("div")
+
+  const parentDiv = document.getElementById("overlappingDiv")
+  
+  const wormBetBtn = document.createElement("button")
+  wormBetBtn.innerHTML = "Double or Nothing"
+  wormBetBtn.classList.add("wormBetOff")
+  parentDiv.append(wormBetBtn)
+
+  wormBetBtn.addEventListener("click", ()=> {
+    let betOutcome = Math.floor(Math.random()*2)
+    console.log(betOutcome)
+    if (betOutcome == 0) {
+        battleBackground.draw()
+       worm.draw()
+        wormCount = wormCount * 2; 
+        wormCountElement.innerHTML = "Worm Count: " + wormCount
+
+    }
+    else {
+        battleBackground.draw()
+        frog.draw()
+        wormCount = 0;   
+        wormCountElement.innerHTML = "Worm Count: " + wormCount
+    }  
+    if (wormCount < 2) wormBetBtn.classList.add("wormBetOff")
+
+
+  })
+  
+
+  const miniGameNameElement = document.createElement("h1")
+  miniGameNameElement.innerHTML = "Catch the Worm"
+  instructionDiv.append(miniGameNameElement)
+  
+  const wormCountElement = document.createElement ("p")
+  wormCountElement.innerHTML = "Worm Count: " + wormCount
+  instructionDiv.append(wormCountElement)
+
+   const digBtnElement = document.createElement("button")
+  digBtnElement.innerHTML = "Dig!"
+  instructionDiv.append(digBtnElement)
+
+  digBtnElement.addEventListener("click", () => {
+    digOutcome= Math.floor( Math.random() * 3) 
+    console.log(digOutcome)
+    battleBackground.draw()
+        
+    switch (digOutcome) {
+        case 0:
+            dirt.draw(); 
+            break;
+
+        case 1:
+            frog.draw();
+            wormCount --
+
+            if (wormCount <= 0 ) wormCount = 0;
+            if (wormCount < 2) wormBetBtn.classList.add("wormBetOff")
+
+            break;
+
+        case 2:
+             worm.draw();
+             wormCount ++
+            break;
+    
+        default:
+            break;
+    }
+
+    wormCountElement.innerHTML = "Worm Count: " + wormCount
+    if ( wormCount >= 2) wormBetBtn.classList.remove("wormBetOff")
+    
+
+ })
+ 
+ cutScreen.style.opacity = 0;
+
+  parentDiv.append(instructionDiv)
+}
+
+function wormCatchGame() {
+   
+    
+    battleBackground.draw()
+    
+    shovel.draw();
+
+    
+
+    gameInstructions(); 
+
+    if (digOutcome == 1) {
+        dirt.draw()
+    }
+
+
+
+
+
+
 }
 
 //MOBILE CONTROL CHECKS
