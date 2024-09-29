@@ -487,7 +487,48 @@ let rightBtnPressed;
 let downBtnPressed; 
 
 
-//ESTABLISH CONTROLS FOR MOBILE 
+
+
+//ARROW CONTROLS - TOUCH EVENTS 
+upBtn.addEventListener("touchstart", (event) => {
+
+    event.preventDefault();
+    upBtnPressed= true; 
+})
+
+upBtn.addEventListener("touchend", (event) => {
+    upBtnPressed= false; 
+})
+
+leftBtn.addEventListener("touchstart", (event) => {
+    event.preventDefault();
+    leftBtnPressed= true; 
+})
+
+leftBtn.addEventListener("touchend", () => {
+    leftBtnPressed= false; 
+})
+
+rightBtn.addEventListener("touchstart", (event) => {
+    event.preventDefault();
+    rightBtnPressed= true; 
+})
+
+rightBtn.addEventListener("touchend", () => {
+    rightBtnPressed= false; 
+})
+
+downBtn.addEventListener("touchstart", (event) => {
+    event.preventDefault();
+    downBtnPressed= true; 
+})
+
+downBtn.addEventListener("touchend", () => {
+    downBtnPressed= false; 
+})
+
+
+//ARROW CONTROLS - MOUSE EVENTS 
 upBtn.addEventListener("mousedown", () => {
     upBtnPressed= true; 
 })
