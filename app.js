@@ -33,7 +33,7 @@ playerRightImage.src = "./img/playerRight.png"
 
 //SET NEW IMAGE ELEMENT CALLED mapImg 
 const mapImg= new Image()
-mapImg.src = "./img/GameMap.png"
+mapImg.src = "img/GameMapUpdated.png"
 
 
 
