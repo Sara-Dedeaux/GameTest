@@ -220,7 +220,7 @@ function animate(){
                 battle.initiated = true
                 
                 if (battle.initiated){
-                    cutScreen.style.opacity = .5;
+                    // cutScreen.style.opacity = .5;
 
                     //deactivate current animation loop 
                     window.cancelAnimationFrame(animationID)
@@ -228,7 +228,9 @@ function animate(){
                     
                   
                     //activate a new animation loop 
-                    wormCatchGame()
+                    // wormCatchGame()
+
+                    fishingGame()
                 }
             }
 
@@ -376,6 +378,8 @@ const battleBackground = new Sprite({
     image: battleBackgroundImg
 })
 
+
+
 const shovelImg = new Image();
   shovelImg.src = "img/shovel-test.png"
     shovelImg.classList.add("wormImgs")
@@ -406,6 +410,21 @@ position: {
 },
 
 image: dirtImg
+
+})
+
+const pondImg = new Image();
+pondImg.src = "img/pond-test.png"
+pondImg.classList.add("pondImgs")
+
+const pond = new Sprite ({
+
+position: {
+    x: -250,
+    y: -200
+},
+
+image: pondImg
 
 })
 
@@ -442,7 +461,12 @@ image: wormImg
 
 let digOutcome = 4;
 let wormCount = 0; 
-function gameInstructions () {
+
+function wormCatchGame () {
+
+    battleBackground.draw()
+    
+    shovel.draw();
 
   const  instructionDiv = document.createElement("div")
 
@@ -474,6 +498,16 @@ function gameInstructions () {
 
   })
   
+  const backToMapBtn = document.createElement ("button")
+  backToMapBtn.innerHTML = "Back to Map"
+  instructionDiv.append(backToMapBtn)
+
+  backToMapBtn.addEventListener("click", () => {
+    battle.initiated = false
+
+    animate();
+
+  })
 
   const miniGameNameElement = document.createElement("h1")
   miniGameNameElement.innerHTML = "Catch the Worm"
@@ -526,27 +560,25 @@ function gameInstructions () {
   parentDiv.append(instructionDiv)
 }
 
-function wormCatchGame() {
+function fishingGame(){
+
    
-    
-    battleBackground.draw()
-    
-    shovel.draw();
 
-    
+    //draw background for fish game
+    pond.draw()
+    //use worms to fish
 
-    gameInstructions(); 
+    //create list of fish/ items to catch 
 
-    if (digOutcome == 1) {
-        dirt.draw()
-    }
+    //create game option to forage herbs, gather wood, gather flint rock, to build a fire and cook the fish
 
+    //decide how many times a worm can be used as bait and the probability of outCome - if you forage a lucky clover your odds are better in a game - how long does the luck last? number of games played or chances taken?
 
-
-
-
+    //enery levels decrease with each game played - energy increases with food - different games will require different energy levels - when at 0 energy the only activity you can do is forage for herbs for food to increase energy levels
 
 }
+
+
 
 //MOBILE CONTROL CHECKS
 let upBtnPressed; 
@@ -556,37 +588,37 @@ let downBtnPressed;
 
 
 //ESTABLISH CONTROLS FOR MOBILE 
-upBtn.addEventListener("mousedown", () => {
-    upBtnPressed= true; 
-})
+// upBtn.addEventListener("mousedown", () => {
+//     upBtnPressed= true; 
+// })
 
-upBtn.addEventListener("mouseup", () => {
-    upBtnPressed= false; 
-})
+// upBtn.addEventListener("mouseup", () => {
+//     upBtnPressed= false; 
+// })
 
-leftBtn.addEventListener("mousedown", () => {
-    leftBtnPressed= true; 
-})
+// leftBtn.addEventListener("mousedown", () => {
+//     leftBtnPressed= true; 
+// })
 
-leftBtn.addEventListener("mouseup", () => {
-    leftBtnPressed= false; 
-})
+// leftBtn.addEventListener("mouseup", () => {
+//     leftBtnPressed= false; 
+// })
 
-rightBtn.addEventListener("mousedown", () => {
-    rightBtnPressed= true; 
-})
+// rightBtn.addEventListener("mousedown", () => {
+//     rightBtnPressed= true; 
+// })
 
-rightBtn.addEventListener("mouseup", () => {
-    rightBtnPressed= false; 
-})
+// rightBtn.addEventListener("mouseup", () => {
+//     rightBtnPressed= false; 
+// })
 
-downBtn.addEventListener("mousedown", () => {
-    downBtnPressed= true; 
-})
+// downBtn.addEventListener("mousedown", () => {
+//     downBtnPressed= true; 
+// })
 
-downBtn.addEventListener("mouseup", () => {
-    downBtnPressed= false; 
-})
+// downBtn.addEventListener("mouseup", () => {
+//     downBtnPressed= false; 
+// })
 
 
     

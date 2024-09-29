@@ -1,6 +1,33 @@
 body{
     background-color: black;
     color: white;
+    
+}
+
+.gameTitle {
+    font-family: "Bungee Tint", sans-serif;
+    border: 2px, blanchedalmond, solid;
+    font-size: 100px
+}
+
+.instructions {
+    border: 2px, blanchedalmond, solid;
+
+}
+
+.gamePlay {
+    border: 2px, blanchedalmond, solid;
+
+}
+
+.miniGames {
+    border: 2px, blanchedalmond, solid;
+ 
+}
+
+
+#body {
+    font-family: "Press Start 2P", system-ui;
 }
 
 .navButtons {
@@ -10,6 +37,8 @@ border-radius: 100px;
 
 canvas{
     width: 100%;
+    border: 4px, gray, solid;
+
 }
 
 .gameMap {
@@ -59,4 +88,8 @@ canvas{
 
     display: none;
 
+}
+
+.miniGameOff{
+    display: none;
 }
