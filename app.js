@@ -1,21 +1,17 @@
+//BUG LIST
+// If capLock is on controls do not work
+
+//TO DO LIST
 
 
 
-
-
-//TIME OF VIDEO: 2:54:38
-
+//ESTABLISH AND FORMAT CANVAS ELEMENT
 const canvas = document.querySelector('canvas');
 const c = canvas.getContext('2d')
-
-
-
-
-//SETTING THE WIDTH AND HEIGHT OF THE CANVAS
 canvas.width = 1024
 canvas.height = 576
 
-//CREATE NEW IMAGE CALLED playerImage 
+//ESTABISH AND FORMAT PLAYER IMAGES
 const playerDownImage= new Image()
 playerDownImage.src = "./img/playerDown.png"
 
@@ -27,18 +23,6 @@ playerLeftImage.src = "./img/playerLeft.png"
 
 const playerRightImage= new Image()
 playerRightImage.src = "./img/playerRight.png"
-
-
-
-
-//SET NEW IMAGE ELEMENT CALLED mapImg 
-const mapImg= new Image()
-mapImg.src = "img/GameMapUpdated.png"
-
-
-
-
-//ESTABLISH ARRAY FOR BOUNDARIES
 
 const player = new Sprite({
     position: {
@@ -57,6 +41,10 @@ const player = new Sprite({
     }
 })
 
+//ESTABLISH AND FORMAT MAP IMAGE
+const mapImg= new Image()
+mapImg.src = "img/GameMapUpdated.png"
+
 const offset = {
     x: -80,
     y: -250
@@ -70,58 +58,67 @@ const background = new Sprite({
     image: mapImg
 })
 
-//ESTABLISH ARRAY FOR COLLISION MAP
+
+
+//ESTABLISH ARRAY TO HOLD JSON DATA FOR MINI-GAME ZONES
 const collisionsMapArr = [];
-for (let i = 0; i < collisions.length; i += 70) {
-    collisionsMapArr.push(collisions.slice( i, 70 + i))
+const wormZoneMap = [];
+const flowerZoneMap = []; 
+const boatZoneMap = []; 
+const herbZoneMap = []; 
+const treeZoneMap = [];
+const fishZoneMap = []; 
+
+
+//FILL ARRAYS WITH ZONE DATA
+condenseZoneArray(collisionsMapArr, collisions)
+condenseZoneArray(boatZoneMap, boatZoneData)
+condenseZoneArray(fishZoneMap, fishZoneData)
+condenseZoneArray(flowerZoneMap, flowerZoneData)
+condenseZoneArray(herbZoneMap, herbZoneData)
+condenseZoneArray(treeZoneMap, treeZoneData)
+condenseZoneArray(wormZoneMap, wormZoneData)
+
+function condenseZoneArray (zoneArr, zoneData) {
+    for (let i = 0; i < zoneData.length; i += 70) {
+        zoneArr.push(zoneData.slice( i, 70 + i))
+    }
 }
 
-const battleZonesMap = [];
-for (let i = 0; i < battleZonesData.length; i += 70) {
-    battleZonesMap.push(battleZonesData.slice( i, 70 + i))
-}
-
-console.log(battleZonesMap)
-
-
-
-
-
-
+//USE ZONE DATA TO CREATE AN ARRAY OF MAP BOUNDARIES
 const boundaries = [];
+const boatZones = [];
+const fishZones = [];
+const flowerZones = [];
+const herbZones = [];
+const treeZones = [];
+const wormZones = []; 
 
-collisionsMapArr.forEach((row, i)=> {
-    row.forEach ((symbol, j) => {
-        if(symbol === 1025)
-        boundaries.push(
-            new Boundary({
-                position:{
-                    x: j * Boundary.width + offset.x,
-                    y: i * Boundary.height + offset.y
-                }
-            })
-        )
-    })
-});
+defineBoundaries(collisionsMapArr, boundaries)
+defineBoundaries(boatZoneMap, boatZones )
+defineBoundaries(fishZoneMap, fishZones )
+defineBoundaries(flowerZoneMap, flowerZones )
+defineBoundaries(herbZoneMap, herbZones )
+defineBoundaries(treeZoneMap, treeZones )
+defineBoundaries(wormZoneMap, wormZones)
 
-const battleZones = []; 
+function defineBoundaries(zoneMap, zones) {
+    zoneMap.forEach((row, i)=> {
+        row.forEach ((symbol, j) => {
+            if(symbol != 0)
+            zones.push(
+                new Boundary({
+                    position:{
+                        x: j * Boundary.width + offset.x,
+                        y: i * Boundary.height + offset.y
+                    }
+                })
+            )
+        })
+    });   
+}
 
-battleZonesMap.forEach((row, i)=> {
-    row.forEach ((symbol, j) => {
-        if(symbol === 1025)
-        battleZones.push(
-            new Boundary({
-                position:{
-                    x: j * Boundary.width + offset.x,
-                    y: i * Boundary.height + offset.y
-                }
-            })
-        )
-    })
-});
-
-console.log(battleZones)
-
+//CREATE OBJECT FOR KEYS FOR PLAYER MOVEMENT CONTROLS
 const keys = {
     w: {
         pressed:false
@@ -145,57 +142,49 @@ const downBtn=document.getElementById("down");
 
 
 
-
-const movables = [background, ...boundaries, ...battleZones ]//...moves all elements seperately from boundaries array into movables- instead of creating 2-d array
+//ESTABLISH AN ARRAY SO MAP CAN BE FORMATTED. THESE ITEMS SHOULD MOVE AS ONE TO GIVE THE ILLUSION THAT THE PLAYER IS MOVING
+const movables = [background, ...boundaries, ...wormZones ]
 
 function rectangularCollision({rectangle1, rectangle2}){
+    //CHECKS TO SEE HOW MUCH OF THE PLAYER AND BOUNDARY ARE OVERLAPPING BASED ON X & Y COORDS AND IF THE PLAYER HAS MOVED FAR ENOUGH INTO THE BOUNDARY IT WILL RETURN TRUE ( THIS PREVENTS ACCIDENTAL OR OVER TRIGGERING OF GAME ZONE)
     return (rectangle1.position.x + rectangle1.width >= rectangle2.position.x && rectangle1.position.x <= rectangle2.position.x + rectangle2.width && rectangle1.position.y <= rectangle2.position.y + rectangle2.height && rectangle1.position.y + rectangle1.height >= rectangle2.position.y)
-
-    
 }
 
+//ESTABLISH OBJECT THAT CAN HOLD A BOOLEAN TO SWITCH ON AND OFF IF A MINI-GAME HAS BEEN ACTIVATED
 const battle = {
     initiated: false
 }
 
-const cutScreen =  document.querySelector(".gameMapDiv")
+
+
 function animate(){
-
-
-
-
-    
+   //CREATES AN INFINITE LOOP TO GIVE THE ILLUSION OF MOVEMENT -
    const animationID = window.requestAnimationFrame(animate)
-   console.log(animationID)
+
+   //DRAW MAP, ZONE BOUNDARIES, AND PLAYER ON CANVAS
     background.draw()
-    
     boundaries.forEach((boundary) => {
         boundary.draw()
-        
     })
-
-    battleZones.forEach((battlezone) => {
+    wormZones.forEach((battlezone) => {
         battlezone.draw()
-    })
-    
+    })  
     player.draw()
 
+
+    //ESTABLISHES BOOLEAN TO ALLOW OR PREVENT PLAYER MOVEMENT
     let moving = true
+
+    //THIS STOPS PLAYER IMAGE FROM CYCYLING THROUGH SPRITE FRAMES WHEN STANDING STILL
     player.moving = false; 
     
-    
-    
-   
-    
-
-    //this prevents player from continuing to move once a battle is activated
-    console.log(animationID)
+    //IF A MINI-GAME HAS BEEN TRIGGERED THIS WILL PREVENT PLAYER FROM MOVING SO THE GAME CAN BE PLAYED
     if (battle.initiated) return
     
-    //activate a battle
+    //CHECKS FOR PLAYER COLLISION WITH MAP BOUNDARIES AND IF PLAYER IS OVERLAPPING ENOUGH WITH ZONE, THE MINI-GAME WILL BE ACTIVATED AND THE ANIMATE LOOP WILL BE BROKEN TO ALLOW FOR MINI-GAME SCREEN TO SHOW
     if (keys.w.pressed || keys.a.pressed || keys.s.pressed || keys.d.pressed || upBtnPressed === true || downBtnPressed === true || leftBtnPressed === true || rightBtnPressed === true) {
-        for (let i = 0; i < battleZones.length; i++) {
-            const battlezone = battleZones[i];
+        for (let i = 0; i < wormZones.length; i++) {
+            const battlezone = wormZones[i];
             const overlappingArea = 
             (Math.min(
                 player.position.x + player.width, 
@@ -216,40 +205,27 @@ function animate(){
                 overlappingArea > (player.width * player.height) / 2 &&
                 Math.random() < 0.1
             ) {
-                console.log("activate battle")
                 battle.initiated = true
-                
                 if (battle.initiated){
-                    // cutScreen.style.opacity = .5;
-
                     //deactivate current animation loop 
                     window.cancelAnimationFrame(animationID)
 
-                    
-                  
-                    //activate a new animation loop 
+
                     // wormCatchGame()
 
                     fishingGame()
                 }
             }
-
-
-            
         }
-
     }
     
     //DETERMINE BOUNDARIES AND TURN OFF MOVEMENT IF PLAYER COLLIDES WITH BARRIERS
-    
     if (keys.w.pressed && lastKey === 'w' || upBtnPressed=== true) {
         player.moving = true 
         player.image = player.sprites.up
-       
 
         for (let i = 0; i < boundaries.length; i++) {
             const boundary = boundaries[i];
-
             if (
                 rectangularCollision({
                     rectangle1: player,
@@ -265,82 +241,67 @@ function animate(){
                 moving = false
                 break
             }
-            
         }
-
-       
-
-        
-        if (moving)
-        movables.forEach(movable => {
+        if (moving) movables.forEach(movable => {
             movable.position.y += 3
-        })
-    }
-    
-    else if(keys.s.pressed && lastKey === 's' || downBtnPressed === true) {
-        player.moving = true 
-        player.image = player.sprites.down
+            })
+        } else if(keys.s.pressed && lastKey === 's' || downBtnPressed === true) {
+            player.moving = true 
+            player.image = player.sprites.down
 
-        for (let i = 0; i < boundaries.length; i++) {
-            const boundary = boundaries[i];
+            for (let i = 0; i < boundaries.length; i++) {
+                const boundary = boundaries[i];
 
-            if (
-                rectangularCollision({
-                    rectangle1: player,
-                    rectangle2: {
-                        ...boundary, 
-                        position:{
-                            x: boundary.position.x,
-                            y: boundary.position.y - 3
-                        }
-                    } 
-                })
-            ) {
-                moving = false;
-                break;
+                if (rectangularCollision({
+                        rectangle1: player,
+                        rectangle2: {
+                            ...boundary, 
+                            position:{
+                                x: boundary.position.x,
+                                y: boundary.position.y - 3
+                            }
+                        } 
+                    })
+                ) {
+                    moving = false;
+                    break;
+                }
+                
             }
-            
-        }
         
-        if (moving)
-        movables.forEach(movable => {movable.position.y -= 3})
+            if (moving)
+            movables.forEach(movable => {movable.position.y -= 3})
 
-    } else if(keys.d.pressed && lastKey === 'd' || rightBtnPressed === true)
-        {
+        } else if(keys.d.pressed && lastKey === 'd' || rightBtnPressed === true){
             player.moving = true 
             player.image = player.sprites.right
 
-        for (let i = 0; i < boundaries.length; i++) {
-            const boundary = boundaries[i];
+            for (let i = 0; i < boundaries.length; i++) {
+                const boundary = boundaries[i];
 
-            if (
-                rectangularCollision({
-                    rectangle1: player,
-                    rectangle2: {
-                        ...boundary, 
-                        position:{
-                            x: boundary.position.x - 3,
-                            y: boundary.position.y 
-                        }
-                    } 
-                })
-            ) {
-                moving = false;
-                break;
-            }
+                if (rectangularCollision({
+                        rectangle1: player,
+                        rectangle2: {
+                            ...boundary, 
+                            position:{
+                                x: boundary.position.x - 3,
+                                y: boundary.position.y 
+                            }
+                        } 
+                    })
+                ) {
+                    moving = false;
+                    break;
+                }
             
-        }
-
-        if (moving)
-        movables.forEach(movable => {movable.position.x -= 3})
-     }else if(keys.a.pressed && lastKey === 'a' || leftBtnPressed === true) {
+            }
+        if (moving) movables.forEach(movable => {movable.position.x -= 3})
+    } else if (keys.a.pressed && lastKey === 'a' || leftBtnPressed === true) {
         player.moving = true 
         player.image = player.sprites.left
 
-
         for (let i = 0; i < boundaries.length; i++) {
             const boundary = boundaries[i];
-
             if (
                 rectangularCollision({
                     rectangle1: player,
@@ -352,24 +313,19 @@ function animate(){
                         }
                     } 
                 })
-            ) {
+            ){
                 moving = false;
                 break;
             }
             
         }
-
-        if (moving)
-        movables.forEach(movable => {movable.position.x += 3})
+        if (moving) movables.forEach(movable => {movable.position.x += 3})
     }
-}
+}//END ANIMATE FUNCTION
 
-
-
-
+//CREATE WORM MINI-GAME IMAGES AND SPRITES
 const battleBackgroundImg = new Image(); 
 battleBackgroundImg.src = "img/ground-7855872_1280.png"
-
 const battleBackground = new Sprite({
     position: {
         x: 0,
@@ -378,186 +334,125 @@ const battleBackground = new Sprite({
     image: battleBackgroundImg
 })
 
-
-
 const shovelImg = new Image();
-  shovelImg.src = "img/shovel-test.png"
-    shovelImg.classList.add("wormImgs")
- 
-
-  
- 
+shovelImg.src = "img/shovel-test.png"
+shovelImg.classList.add("wormImgs")
 const shovel = new Sprite ({
-    
     position: {
         x: 300,
         y: 50
     },
-    
     image: shovelImg
-
 })
 
 const dirtImg = new Image();
 dirtImg.src = "img/dirt-test.png"
 dirtImg.classList.add("wormImgs")
-
 const dirt = new Sprite ({
-
-position: {
-    x: 300,
-    y: 150
-},
-
-image: dirtImg
-
+    position: {
+        x: 300,
+        y: 150
+    },
+    image: dirtImg
 })
 
 const pondImg = new Image();
 pondImg.src = "img/pond-test.png"
 pondImg.classList.add("pondImgs")
-
 const pond = new Sprite ({
-
-position: {
-    x: -250,
-    y: -200
-},
-
-image: pondImg
-
+    position: {
+        x: -250,
+        y: -200
+    },
+    image: pondImg
 })
 
 const frogImg = new Image();
 frogImg.src = "img/frog-test.png"
 frogImg.classList.add("wormImgs")
-
 const frog = new Sprite ({
-
-position: {
-    x: 300,
-    y: 150
-},
-
-image: frogImg
-
+    position: {
+        x: 300,
+        y: 150
+    },
+    image: frogImg
 })
 
 const wormImg = new Image();
 wormImg.src = "img/worm-test2.png"
 wormImg.classList.add("wormImgs")
-
 const worm = new Sprite ({
-
-position: {
-    x: 100,
-    y: 0
-},
-
-image: wormImg
-
+    position: {
+        x: 100,
+        y: 0
+    },
+    image: wormImg
 })
 
-
+//ESTABLISH WORM GAME VARIABLES
 let digOutcome = 4;
 let wormCount = 0; 
 
 function wormCatchGame () {
-
+    //DRAW IMAGES FOR START OF GAME
     battleBackground.draw()
-    
     shovel.draw();
 
-  const  instructionDiv = document.createElement("div")
-
-  const parentDiv = document.getElementById("overlappingDiv")
+    //DOUBLE OR NOTHING FEATURE
+    wormBetBtn.addEventListener("click", ()=> {
+        let betOutcome = Math.floor(Math.random()*2)
+        if (betOutcome == 0) {
+            battleBackground.draw()
+        worm.draw()
+            wormCount = wormCount * 2; 
+            wormCountElement.innerHTML = "Worm Count: " + wormCount
+        }
+        else {
+            battleBackground.draw()
+            frog.draw()
+            wormCount = 0;   
+            wormCountElement.innerHTML = "Worm Count: " + wormCount
+        }  
+        if (wormCount < 2) wormBetBtn.classList.add("wormBetOff")
+    })
   
-  const wormBetBtn = document.createElement("button")
-  wormBetBtn.innerHTML = "Double or Nothing"
-  wormBetBtn.classList.add("wormBetOff")
-  parentDiv.append(wormBetBtn)
+    //RETURN TO MAP FEATURE
+    backToMapBtn.addEventListener("click", () => {
+        battle.initiated = false
+        animate();
+    })
 
-  wormBetBtn.addEventListener("click", ()=> {
-    let betOutcome = Math.floor(Math.random()*2)
-    console.log(betOutcome)
-    if (betOutcome == 0) {
+  
+    digBtnElement.addEventListener("click", () => {
+        digOutcome= Math.floor( Math.random() * 3) 
+        console.log(digOutcome)
         battleBackground.draw()
-       worm.draw()
-        wormCount = wormCount * 2; 
-        wormCountElement.innerHTML = "Worm Count: " + wormCount
+            
+        switch (digOutcome) {
+            case 0:
+                dirt.draw(); 
+                break;
 
-    }
-    else {
-        battleBackground.draw()
-        frog.draw()
-        wormCount = 0;   
-        wormCountElement.innerHTML = "Worm Count: " + wormCount
-    }  
-    if (wormCount < 2) wormBetBtn.classList.add("wormBetOff")
+            case 1:
+                frog.draw();
+                wormCount --
 
+                if (wormCount <= 0 ) wormCount = 0;
+                if (wormCount < 2) wormBetBtn.classList.add("wormBetOff")
 
-  })
-  
-  const backToMapBtn = document.createElement ("button")
-  backToMapBtn.innerHTML = "Back to Map"
-  instructionDiv.append(backToMapBtn)
+                break;
 
-  backToMapBtn.addEventListener("click", () => {
-    battle.initiated = false
-
-    animate();
-
-  })
-
-  const miniGameNameElement = document.createElement("h1")
-  miniGameNameElement.innerHTML = "Catch the Worm"
-  instructionDiv.append(miniGameNameElement)
-  
-  const wormCountElement = document.createElement ("p")
-  wormCountElement.innerHTML = "Worm Count: " + wormCount
-  instructionDiv.append(wormCountElement)
-
-   const digBtnElement = document.createElement("button")
-  digBtnElement.innerHTML = "Dig!"
-  instructionDiv.append(digBtnElement)
-
-  digBtnElement.addEventListener("click", () => {
-    digOutcome= Math.floor( Math.random() * 3) 
-    console.log(digOutcome)
-    battleBackground.draw()
+            case 2:
+                worm.draw();
+                wormCount ++
+                break;
         
-    switch (digOutcome) {
-        case 0:
-            dirt.draw(); 
+            default:
             break;
-
-        case 1:
-            frog.draw();
-            wormCount --
-
-            if (wormCount <= 0 ) wormCount = 0;
-            if (wormCount < 2) wormBetBtn.classList.add("wormBetOff")
-
-            break;
-
-        case 2:
-             worm.draw();
-             wormCount ++
-            break;
-    
-        default:
-            break;
-    }
-
-    wormCountElement.innerHTML = "Worm Count: " + wormCount
-    if ( wormCount >= 2) wormBetBtn.classList.remove("wormBetOff")
-    
-
- })
- 
- cutScreen.style.opacity = 0;
-
-  parentDiv.append(instructionDiv)
+        }
+        wormCountElement.innerHTML = "Worm Count: " + wormCount
+        if ( wormCount >= 2) wormBetBtn.classList.remove("wormBetOff")
+    })
 }
 
 function fishingGame(){
