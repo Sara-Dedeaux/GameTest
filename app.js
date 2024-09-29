@@ -45,6 +45,7 @@ const player = new Sprite({
 const mapImg= new Image()
 mapImg.src = "img/GameMapUpdated.png"
 
+//SET OBJECT FOR IMAGE ALIGNMENTS
 const offset = {
     x: -80,
     y: -250
@@ -136,9 +137,13 @@ const keys = {
 
 //MOBILE BUTTONS
 const upBtn= document.getElementById("up"); 
+console.log(upBtn)
 const leftBtn=document.getElementById("left");
+console.log(leftBtn)
 const rightBtn=document.getElementById("right");
+console.log(rightBtn)
 const downBtn=document.getElementById("down");
+console.log(downBtn)
 
 
 
@@ -219,7 +224,7 @@ function animate(){
         }
     }
     
-    //DETERMINE BOUNDARIES AND TURN OFF MOVEMENT IF PLAYER COLLIDES WITH BARRIERS
+    //DETERMINE DIRECTION OF PLAYER MOVEMENT BASED ON KEY PRESS AND BOUNDARY DETECTIONS
     if (keys.w.pressed && lastKey === 'w' || upBtnPressed=== true) {
         player.moving = true 
         player.image = player.sprites.up
@@ -483,37 +488,37 @@ let downBtnPressed;
 
 
 //ESTABLISH CONTROLS FOR MOBILE 
-// upBtn.addEventListener("mousedown", () => {
-//     upBtnPressed= true; 
-// })
+upBtn.addEventListener("mousedown", () => {
+    upBtnPressed= true; 
+})
 
-// upBtn.addEventListener("mouseup", () => {
-//     upBtnPressed= false; 
-// })
+upBtn.addEventListener("mouseup", () => {
+    upBtnPressed= false; 
+})
 
-// leftBtn.addEventListener("mousedown", () => {
-//     leftBtnPressed= true; 
-// })
+leftBtn.addEventListener("mousedown", () => {
+    leftBtnPressed= true; 
+})
 
-// leftBtn.addEventListener("mouseup", () => {
-//     leftBtnPressed= false; 
-// })
+leftBtn.addEventListener("mouseup", () => {
+    leftBtnPressed= false; 
+})
 
-// rightBtn.addEventListener("mousedown", () => {
-//     rightBtnPressed= true; 
-// })
+rightBtn.addEventListener("mousedown", () => {
+    rightBtnPressed= true; 
+})
 
-// rightBtn.addEventListener("mouseup", () => {
-//     rightBtnPressed= false; 
-// })
+rightBtn.addEventListener("mouseup", () => {
+    rightBtnPressed= false; 
+})
 
-// downBtn.addEventListener("mousedown", () => {
-//     downBtnPressed= true; 
-// })
+downBtn.addEventListener("mousedown", () => {
+    downBtnPressed= true; 
+})
 
-// downBtn.addEventListener("mouseup", () => {
-//     downBtnPressed= false; 
-// })
+downBtn.addEventListener("mouseup", () => {
+    downBtnPressed= false; 
+})
 
 
     
