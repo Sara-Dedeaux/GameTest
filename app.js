@@ -156,24 +156,57 @@ function rectangularCollision({rectangle1, rectangle2}){
 }
 
 //ESTABLISH OBJECT THAT CAN HOLD A BOOLEAN TO SWITCH ON AND OFF IF A MINI-GAME HAS BEEN ACTIVATED
-const battle = {
+const wormTrigger = {
     initiated: false
 }
-
+const fishTrigger = {
+    initiated: false
+}
+const flowerTrigger = {
+    initiated: false
+}
+const boatTrigger = {
+    initiated: false
+}
+const treeTrigger = {
+    initiated: false
+}
+const herbTrigger = {
+    initiated: false
+}
+const gameTrigger = {
+    initiated: false
+}
 
 
 function animate(){
    //CREATES AN INFINITE LOOP TO GIVE THE ILLUSION OF MOVEMENT -
    const animationID = window.requestAnimationFrame(animate)
+   console.log(animationID)
 
    //DRAW MAP, ZONE BOUNDARIES, AND PLAYER ON CANVAS
     background.draw()
     boundaries.forEach((boundary) => {
         boundary.draw()
     })
-    wormZones.forEach((battlezone) => {
-        battlezone.draw()
-    })  
+    wormZones.forEach((triggerZone) => {
+        triggerZone.draw()
+    })
+    fishZones.forEach((triggerZone) => {
+        triggerZone.draw()
+    })
+    flowerZones.forEach((triggerZone) => {
+        triggerZone.draw()
+    })
+    herbZones.forEach((triggerZone) => {
+        triggerZone.draw()
+    })
+    boatZones.forEach((triggerZone) => {
+        triggerZone.draw()
+    })
+    treeZones.forEach((triggerZone) => {
+        triggerZone.draw()
+    })
     
     player.draw()
 
@@ -185,93 +218,202 @@ function animate(){
     player.moving = false; 
     
     //IF A MINI-GAME HAS BEEN TRIGGERED THIS WILL PREVENT PLAYER FROM MOVING SO THE GAME CAN BE PLAYED
-    if (battle.initiated) return
+    if (gameTrigger.initiated) return
     
     //CHECKS FOR PLAYER COLLISION WITH MAP BOUNDARIES AND IF PLAYER IS OVERLAPPING ENOUGH WITH ZONE, THE MINI-GAME WILL BE ACTIVATED AND THE ANIMATE LOOP WILL BE BROKEN TO ALLOW FOR MINI-GAME SCREEN TO SHOW
     if (keys.w.pressed || keys.a.pressed || keys.s.pressed || keys.d.pressed || upBtnPressed === true || downBtnPressed === true || leftBtnPressed === true || rightBtnPressed === true) {
-
-        establishGameZones
         
-        function establishGameZones(gameZones, gameName){
+        for (let i = 0; i < wormZones.length; i++) {
+            const battlezone = wormZones[i];
+            const overlappingArea = 
+            (Math.min(
+                player.position.x + player.width, 
+                battlezone.position.x + battlezone.width
+            ) - 
+            Math.max(player.position.x, battlezone.position.x)) * 
+            (Math.min(
+                player.position.y + player.height, 
+                battlezone.position.y + battlezone.height
+            ) -
+            Math.max(player.position.y, battlezone.position.y))
 
-            for (let i = 0; i < gameZones.length; i++) {
-                const battlezone = gameZones[i];
-                const overlappingArea = 
-                (Math.min(
-                    player.position.x + player.width, 
-                    battlezone.position.x + battlezone.width
-                ) - 
-                Math.max(player.position.x, battlezone.position.x)) * 
-                (Math.min(
-                    player.position.y + player.height, 
-                    battlezone.position.y + battlezone.height
-                ) -
-                Math.max(player.position.y, battlezone.position.y))
-    
-                if (
-                    rectangularCollision({
-                        rectangle1: player,
-                        rectangle2: battlezone
-                    }) &&
-                    overlappingArea > (player.width * player.height) / 2 &&
-                    Math.random() < 0.1
-                ) {
-                    battle.initiated = true
-                    if (battle.initiated){
-                        //deactivate current animation loop 
-                        window.cancelAnimationFrame(animationID)
-    
-                        switch (battle.initiated) {
-                            case gameName == "worm":
-                                wormCatchGame()
-                                
-                                break;
-                        
-                            default:
-                            break;
-                        }
-                    }
+            if (
+                rectangularCollision({
+                    rectangle1: player,
+                    rectangle2: battlezone
+                }) &&
+                overlappingArea > (player.width * player.height) / 2 &&
+                Math.random() < 0.1
+            ){
+
+            wormTrigger.initiated = true
+            if (wormTrigger.initiated){
+                
+                gameTrigger.initiated = true
+                window.cancelAnimationFrame(animationID)
+                wormCatchGame()
+                // animate()
+
+            }
+        }
+           
+        }
+        for (let i = 0; i < fishZones.length; i++) {
+            const battlezone = fishZones[i];
+            const overlappingArea = 
+            (Math.min(
+                player.position.x + player.width, 
+                battlezone.position.x + battlezone.width
+            ) - 
+            Math.max(player.position.x, battlezone.position.x)) * 
+            (Math.min(
+                player.position.y + player.height, 
+                battlezone.position.y + battlezone.height
+            ) -
+            Math.max(player.position.y, battlezone.position.y))
+
+            if (
+                rectangularCollision({
+                    rectangle1: player,
+                    rectangle2: battlezone
+                }) &&
+                overlappingArea > (player.width * player.height) / 2 &&
+                Math.random() < 0.1
+            ) {
+                gameTrigger.initiated = true
+                fishTrigger.initiated=true
+                if (fishTrigger.initiated){
+                    //deactivate current animation loop 
+                    window.cancelAnimationFrame(animationID)
+                    fishGame()
                 }
             }
-        }//end function
+        }
+        for (let i = 0; i < flowerZones.length; i++) {
+            const battlezone = flowerZones[i];
+            const overlappingArea = 
+            (Math.min(
+                player.position.x + player.width, 
+                battlezone.position.x + battlezone.width
+            ) - 
+            Math.max(player.position.x, battlezone.position.x)) * 
+            (Math.min(
+                player.position.y + player.height, 
+                battlezone.position.y + battlezone.height
+            ) -
+            Math.max(player.position.y, battlezone.position.y))
 
+            if (
+                rectangularCollision({
+                    rectangle1: player,
+                    rectangle2: battlezone
+                }) &&
+                overlappingArea > (player.width * player.height) / 2 &&
+                Math.random() < 0.1
+            ) {
+                gameTrigger.initiated = true
+                flowerTrigger.initiated=true
+                if (flowerTrigger.initiated){
+                    //deactivate current animation loop 
+                    window.cancelAnimationFrame(animationID)
+                    flowerGame()
+                }
+            }
+        }
+        for (let i = 0; i < boatZones.length; i++) {
+            const battlezone = boatZones[i];
+            const overlappingArea = 
+            (Math.min(
+                player.position.x + player.width, 
+                battlezone.position.x + battlezone.width
+            ) - 
+            Math.max(player.position.x, battlezone.position.x)) * 
+            (Math.min(
+                player.position.y + player.height, 
+                battlezone.position.y + battlezone.height
+            ) -
+            Math.max(player.position.y, battlezone.position.y))
 
-        // for (let i = 0; i < wormZones.length; i++) {
-        //     const battlezone = wormZones[i];
-        //     const overlappingArea = 
-        //     (Math.min(
-        //         player.position.x + player.width, 
-        //         battlezone.position.x + battlezone.width
-        //     ) - 
-        //     Math.max(player.position.x, battlezone.position.x)) * 
-        //     (Math.min(
-        //         player.position.y + player.height, 
-        //         battlezone.position.y + battlezone.height
-        //     ) -
-        //     Math.max(player.position.y, battlezone.position.y))
+            if (
+                rectangularCollision({
+                    rectangle1: player,
+                    rectangle2: battlezone
+                }) &&
+                overlappingArea > (player.width * player.height) / 2 &&
+                Math.random() < 0.1
+            ) {
+                gameTrigger.initiated = true
+                boatTrigger.initiated=true
+                if (boatTrigger.initiated){
+                    //deactivate current animation loop 
+                    window.cancelAnimationFrame(animationID)
+                    boatGame()
+                }
+            }
+        }
+        for (let i = 0; i < herbZones.length; i++) {
+            const battlezone = herbZones[i];
+            const overlappingArea = 
+            (Math.min(
+                player.position.x + player.width, 
+                battlezone.position.x + battlezone.width
+            ) - 
+            Math.max(player.position.x, battlezone.position.x)) * 
+            (Math.min(
+                player.position.y + player.height, 
+                battlezone.position.y + battlezone.height
+            ) -
+            Math.max(player.position.y, battlezone.position.y))
 
-        //     if (
-        //         rectangularCollision({
-        //             rectangle1: player,
-        //             rectangle2: battlezone
-        //         }) &&
-        //         overlappingArea > (player.width * player.height) / 2 &&
-        //         Math.random() < 0.1
-        //     ) {
-        //         battle.initiated = true
-        //         if (battle.initiated){
-        //             //deactivate current animation loop 
-        //             window.cancelAnimationFrame(animationID)
+            if (
+                rectangularCollision({
+                    rectangle1: player,
+                    rectangle2: battlezone
+                }) &&
+                overlappingArea > (player.width * player.height) / 2 &&
+                Math.random() < 0.1
+            ) {
+                gameTrigger.initiated = true
+                herbTrigger.initiated=true
+                if (herbTrigger.initiated){
+                    //deactivate current animation loop 
+                    window.cancelAnimationFrame(animationID)
+                    herbGame()
+                }
+            }
+        }
+        for (let i = 0; i < treeZones.length; i++) {
+            const battlezone = treeZones[i];
+            const overlappingArea = 
+            (Math.min(
+                player.position.x + player.width, 
+                battlezone.position.x + battlezone.width
+            ) - 
+            Math.max(player.position.x, battlezone.position.x)) * 
+            (Math.min(
+                player.position.y + player.height, 
+                battlezone.position.y + battlezone.height
+            ) -
+            Math.max(player.position.y, battlezone.position.y))
 
+            if (
+                rectangularCollision({
+                    rectangle1: player,
+                    rectangle2: battlezone
+                }) &&
+                overlappingArea > (player.width * player.height) / 2 &&
+                Math.random() < 0.1
+            ) {
+                gameTrigger.initiated = true
+                treeTrigger.initiated=true
+                if (treeTrigger.initiated){
+                    //deactivate current animation loop 
+                    window.cancelAnimationFrame(animationID)
+                    treeGame()
+                }
+            }
+        }
 
-                    
-                    
-        //             wormCatchGame()
-
-                    
-        //         }
-        //     }
-        // }
     }
     
     //DETERMINE DIRECTION OF PLAYER MOVEMENT BASED ON KEY PRESS AND BOUNDARY DETECTIONS
@@ -297,11 +439,12 @@ function animate(){
                 break
             }
         }
-        if (moving) movables.forEach(movable => {
-            movable.position.y += 3
+        if (moving) {
+            movables.forEach(movable => {
+                movable.position.y += 3
+                console.log(movable.position.y)
             })
-
-            console.log(movables.postion.y)
+        }
 
         } else if(keys.s.pressed && lastKey === 's' || downBtnPressed === true) {
             player.moving = true 
