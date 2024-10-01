@@ -148,7 +148,7 @@ console.log(downBtn)
 
 
 //ESTABLISH AN ARRAY SO MAP CAN BE FORMATTED. THESE ITEMS SHOULD MOVE AS ONE TO GIVE THE ILLUSION THAT THE PLAYER IS MOVING
-const movables = [background, ...boundaries, ...wormZones ]
+const movables = [background, ...boundaries, ...wormZones, ...fishZones, ...flowerZones, ...boatZones, ...herbZones, ...treeZones ]
 
 function rectangularCollision({rectangle1, rectangle2}){
     //CHECKS TO SEE HOW MUCH OF THE PLAYER AND BOUNDARY ARE OVERLAPPING BASED ON X & Y COORDS AND IF THE PLAYER HAS MOVED FAR ENOUGH INTO THE BOUNDARY IT WILL RETURN TRUE ( THIS PREVENTS ACCIDENTAL OR OVER TRIGGERING OF GAME ZONE)
@@ -174,6 +174,7 @@ function animate(){
     wormZones.forEach((battlezone) => {
         battlezone.draw()
     })  
+    
     player.draw()
 
 
@@ -188,40 +189,89 @@ function animate(){
     
     //CHECKS FOR PLAYER COLLISION WITH MAP BOUNDARIES AND IF PLAYER IS OVERLAPPING ENOUGH WITH ZONE, THE MINI-GAME WILL BE ACTIVATED AND THE ANIMATE LOOP WILL BE BROKEN TO ALLOW FOR MINI-GAME SCREEN TO SHOW
     if (keys.w.pressed || keys.a.pressed || keys.s.pressed || keys.d.pressed || upBtnPressed === true || downBtnPressed === true || leftBtnPressed === true || rightBtnPressed === true) {
-        for (let i = 0; i < wormZones.length; i++) {
-            const battlezone = wormZones[i];
-            const overlappingArea = 
-            (Math.min(
-                player.position.x + player.width, 
-                battlezone.position.x + battlezone.width
-            ) - 
-            Math.max(player.position.x, battlezone.position.x)) * 
-            (Math.min(
-                player.position.y + player.height, 
-                battlezone.position.y + battlezone.height
-            ) -
-            Math.max(player.position.y, battlezone.position.y))
 
-            if (
-                rectangularCollision({
-                    rectangle1: player,
-                    rectangle2: battlezone
-                }) &&
-                overlappingArea > (player.width * player.height) / 2 &&
-                Math.random() < 0.1
-            ) {
-                battle.initiated = true
-                if (battle.initiated){
-                    //deactivate current animation loop 
-                    window.cancelAnimationFrame(animationID)
+        establishGameZones
+        
+        function establishGameZones(gameZones, gameName){
 
-
-                    // wormCatchGame()
-
-                    fishingGame()
+            for (let i = 0; i < gameZones.length; i++) {
+                const battlezone = gameZones[i];
+                const overlappingArea = 
+                (Math.min(
+                    player.position.x + player.width, 
+                    battlezone.position.x + battlezone.width
+                ) - 
+                Math.max(player.position.x, battlezone.position.x)) * 
+                (Math.min(
+                    player.position.y + player.height, 
+                    battlezone.position.y + battlezone.height
+                ) -
+                Math.max(player.position.y, battlezone.position.y))
+    
+                if (
+                    rectangularCollision({
+                        rectangle1: player,
+                        rectangle2: battlezone
+                    }) &&
+                    overlappingArea > (player.width * player.height) / 2 &&
+                    Math.random() < 0.1
+                ) {
+                    battle.initiated = true
+                    if (battle.initiated){
+                        //deactivate current animation loop 
+                        window.cancelAnimationFrame(animationID)
+    
+                        switch (battle.initiated) {
+                            case gameName == "worm":
+                                wormCatchGame()
+                                
+                                break;
+                        
+                            default:
+                            break;
+                        }
+                    }
                 }
             }
-        }
+        }//end function
+
+
+        // for (let i = 0; i < wormZones.length; i++) {
+        //     const battlezone = wormZones[i];
+        //     const overlappingArea = 
+        //     (Math.min(
+        //         player.position.x + player.width, 
+        //         battlezone.position.x + battlezone.width
+        //     ) - 
+        //     Math.max(player.position.x, battlezone.position.x)) * 
+        //     (Math.min(
+        //         player.position.y + player.height, 
+        //         battlezone.position.y + battlezone.height
+        //     ) -
+        //     Math.max(player.position.y, battlezone.position.y))
+
+        //     if (
+        //         rectangularCollision({
+        //             rectangle1: player,
+        //             rectangle2: battlezone
+        //         }) &&
+        //         overlappingArea > (player.width * player.height) / 2 &&
+        //         Math.random() < 0.1
+        //     ) {
+        //         battle.initiated = true
+        //         if (battle.initiated){
+        //             //deactivate current animation loop 
+        //             window.cancelAnimationFrame(animationID)
+
+
+                    
+                    
+        //             wormCatchGame()
+
+                    
+        //         }
+        //     }
+        // }
     }
     
     //DETERMINE DIRECTION OF PLAYER MOVEMENT BASED ON KEY PRESS AND BOUNDARY DETECTIONS
@@ -250,6 +300,9 @@ function animate(){
         if (moving) movables.forEach(movable => {
             movable.position.y += 3
             })
+
+            console.log(movables.postion.y)
+
         } else if(keys.s.pressed && lastKey === 's' || downBtnPressed === true) {
             player.moving = true 
             player.image = player.sprites.down
@@ -328,155 +381,25 @@ function animate(){
     }
 }//END ANIMATE FUNCTION
 
-//CREATE WORM MINI-GAME IMAGES AND SPRITES
-const battleBackgroundImg = new Image(); 
-battleBackgroundImg.src = "img/ground-7855872_1280.png"
-const battleBackground = new Sprite({
-    position: {
-        x: 0,
-        y: 0
-    }, 
-    image: battleBackgroundImg
-})
 
-const shovelImg = new Image();
-shovelImg.src = "img/shovel-test.png"
-shovelImg.classList.add("wormImgs")
-const shovel = new Sprite ({
-    position: {
-        x: 300,
-        y: 50
-    },
-    image: shovelImg
-})
 
-const dirtImg = new Image();
-dirtImg.src = "img/dirt-test.png"
-dirtImg.classList.add("wormImgs")
-const dirt = new Sprite ({
-    position: {
-        x: 300,
-        y: 150
-    },
-    image: dirtImg
-})
-
-const pondImg = new Image();
-pondImg.src = "img/pond-test.png"
-pondImg.classList.add("pondImgs")
-const pond = new Sprite ({
-    position: {
-        x: -250,
-        y: -200
-    },
-    image: pondImg
-})
-
-const frogImg = new Image();
-frogImg.src = "img/frog-test.png"
-frogImg.classList.add("wormImgs")
-const frog = new Sprite ({
-    position: {
-        x: 300,
-        y: 150
-    },
-    image: frogImg
-})
-
-const wormImg = new Image();
-wormImg.src = "img/worm-test2.png"
-wormImg.classList.add("wormImgs")
-const worm = new Sprite ({
-    position: {
-        x: 100,
-        y: 0
-    },
-    image: wormImg
-})
-
-//ESTABLISH WORM GAME VARIABLES
-let digOutcome = 4;
-let wormCount = 0; 
-
-function wormCatchGame () {
-    //DRAW IMAGES FOR START OF GAME
-    battleBackground.draw()
-    shovel.draw();
-
-    //DOUBLE OR NOTHING FEATURE
-    wormBetBtn.addEventListener("click", ()=> {
-        let betOutcome = Math.floor(Math.random()*2)
-        if (betOutcome == 0) {
-            battleBackground.draw()
-        worm.draw()
-            wormCount = wormCount * 2; 
-            wormCountElement.innerHTML = "Worm Count: " + wormCount
-        }
-        else {
-            battleBackground.draw()
-            frog.draw()
-            wormCount = 0;   
-            wormCountElement.innerHTML = "Worm Count: " + wormCount
-        }  
-        if (wormCount < 2) wormBetBtn.classList.add("wormBetOff")
-    })
-  
-    //RETURN TO MAP FEATURE
-    backToMapBtn.addEventListener("click", () => {
-        battle.initiated = false
-        animate();
-    })
-
-  
-    digBtnElement.addEventListener("click", () => {
-        digOutcome= Math.floor( Math.random() * 3) 
-        console.log(digOutcome)
-        battleBackground.draw()
-            
-        switch (digOutcome) {
-            case 0:
-                dirt.draw(); 
-                break;
-
-            case 1:
-                frog.draw();
-                wormCount --
-
-                if (wormCount <= 0 ) wormCount = 0;
-                if (wormCount < 2) wormBetBtn.classList.add("wormBetOff")
-
-                break;
-
-            case 2:
-                worm.draw();
-                wormCount ++
-                break;
-        
-            default:
-            break;
-        }
-        wormCountElement.innerHTML = "Worm Count: " + wormCount
-        if ( wormCount >= 2) wormBetBtn.classList.remove("wormBetOff")
-    })
-}
-
-function fishingGame(){
+// function fishingGame(){
 
    
 
-    //draw background for fish game
-    pond.draw()
-    //use worms to fish
+//     //draw background for fish game
+//     pond.draw()
+//     //use worms to fish
 
-    //create list of fish/ items to catch 
+//     //create list of fish/ items to catch 
 
-    //create game option to forage herbs, gather wood, gather flint rock, to build a fire and cook the fish
+//     //create game option to forage herbs, gather wood, gather flint rock, to build a fire and cook the fish
 
-    //decide how many times a worm can be used as bait and the probability of outCome - if you forage a lucky clover your odds are better in a game - how long does the luck last? number of games played or chances taken?
+//     //decide how many times a worm can be used as bait and the probability of outCome - if you forage a lucky clover your odds are better in a game - how long does the luck last? number of games played or chances taken?
 
-    //enery levels decrease with each game played - energy increases with food - different games will require different energy levels - when at 0 energy the only activity you can do is forage for herbs for food to increase energy levels
+//     //enery levels decrease with each game played - energy increases with food - different games will require different energy levels - when at 0 energy the only activity you can do is forage for herbs for food to increase energy levels
 
-}
+// }
 
 
 
@@ -489,9 +412,10 @@ let downBtnPressed;
 
 
 
+
+
 //ARROW CONTROLS - TOUCH EVENTS 
 upBtn.addEventListener("touchstart", (event) => {
-
     event.preventDefault();
     upBtnPressed= true; 
 })

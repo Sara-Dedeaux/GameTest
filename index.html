@@ -60,21 +60,24 @@
         <div class="miniGames">
             <div class="startMenu  d-none d-sm-block">
                 <br>
-                <p>Explore the map to find hidden challenges!</p>
-                <p class="d-none d-md-block d-sm-block d-lg-none"> Controls: WASD or Click & Hold Arrows</p>
-                <p class="d-none d-lg-block">Controls: WASD </p>
+                <p  id="gameDiscription">Explore the map to find hidden challenges!</p>
+                <p id="mobileDir" class="d-none d-md-block d-sm-block d-lg-none"> Controls: WASD or Click & Hold Arrows</p>
+                <p id="largeDispDir" class="d-none d-lg-block">Controls: WASD </p>
+            </div>
+            <div class="inventory">
+                <p id="wormCollect" class="d-none">Worms collected: </p>
             </div>
             <div class="wormGame container d-none ">
+                
                 <div class="row">
                     <div class="col-4">
                         <button id="return">Back to Map</button>
                     </div>
                     <div class="col-4">
-                        <button id="dig">Dig!</button>
+                        <button id="play"></button>
                     </div>
                     <div class="col-4">
-                        <p>Worm Count: </p>
-                        <button id="worm gamble">Double or nothing</button>
+                        <button id="bet" class="d-none">Double or Nothing</button>
                     </div>
                 </div>
             </div>
@@ -86,9 +89,9 @@
 </body>
 
 </html>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js" integrity="sha512-H6cPm97FAsgIKmlBA4s774vqoN24V5gSQL4yBTDOY2su2DeXZVhQPxFK4P6GPdnZqM9fg1G3cMv5wD7e6cFLZQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script src="gameZoneMap.js"></script>
 <script src="collisionMap.js"></script>
 <script src="classes.js"></script>
 <script src="app.js"></script>
+<script src="miniGames.js"></script>
