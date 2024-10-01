@@ -218,7 +218,7 @@ function animate(){
     player.moving = false; 
     
     //IF A MINI-GAME HAS BEEN TRIGGERED THIS WILL PREVENT PLAYER FROM MOVING SO THE GAME CAN BE PLAYED
-    if (gameTrigger.initiated) return
+    if (wormTrigger.initiated || boatTrigger.initiated || treeTrigger.initiated || fishTrigger.initiated) return
     
     //CHECKS FOR PLAYER COLLISION WITH MAP BOUNDARIES AND IF PLAYER IS OVERLAPPING ENOUGH WITH ZONE, THE MINI-GAME WILL BE ACTIVATED AND THE ANIMATE LOOP WILL BE BROKEN TO ALLOW FOR MINI-GAME SCREEN TO SHOW
     if (keys.w.pressed || keys.a.pressed || keys.s.pressed || keys.d.pressed || upBtnPressed === true || downBtnPressed === true || leftBtnPressed === true || rightBtnPressed === true) {
@@ -315,7 +315,7 @@ function animate(){
                 flowerTrigger.initiated=true
                 if (flowerTrigger.initiated){
                     //deactivate current animation loop 
-                    window.cancelAnimationFrame(animationID)
+                    //window.cancelAnimationFrame(animationID)
                     flowerGame()
                 }
             }
@@ -377,7 +377,7 @@ function animate(){
                 herbTrigger.initiated=true
                 if (herbTrigger.initiated){
                     //deactivate current animation loop 
-                    window.cancelAnimationFrame(animationID)
+                    //window.cancelAnimationFrame(animationID)
                     herbGame()
                 }
             }
@@ -464,7 +464,8 @@ function animate(){
                         } 
                     })
                 ) {
-                    moving = false;
+                        moving = false
+                   
                     break;
                 }
                 
@@ -491,7 +492,8 @@ function animate(){
                         } 
                     })
                 ) {
-                    moving = false;
+                        moving = false
+                   
                     break;
                 }
             
@@ -515,7 +517,8 @@ function animate(){
                     } 
                 })
             ){
-                moving = false;
+                    moving = false
+                
                 break;
             }
             

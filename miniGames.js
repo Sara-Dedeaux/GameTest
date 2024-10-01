@@ -124,8 +124,6 @@ returnBtn.addEventListener("click", () => {
     wormGameDiv.classList.add("d-none")
     gameTrigger.initiated = false
     wormTrigger.initiated = false
-    // battleBackgroundImg.src = ""
-    // battleBackground.draw()
     animate()
 })
 
