@@ -252,12 +252,14 @@ function animate(){
                 gameTrigger.initiated = true
                 window.cancelAnimationFrame(animationID)
                 wormCatchGame()
+                main()
                 // animate()
 
             }
         }
            
         }
+
         for (let i = 0; i < fishZones.length; i++) {
             const battlezone = fishZones[i];
             const overlappingArea = 
@@ -309,13 +311,12 @@ function animate(){
                     rectangle2: battlezone
                 }) &&
                 overlappingArea > (player.width * player.height) / 2 &&
-                Math.random() < 0.1
+                Math.random() < 0.01
             ) {
                 gameTrigger.initiated = true
                 flowerTrigger.initiated=true
                 if (flowerTrigger.initiated){
-                    //deactivate current animation loop 
-                    //window.cancelAnimationFrame(animationID)
+                  
                     flowerGame()
                 }
             }
@@ -371,13 +372,11 @@ function animate(){
                     rectangle2: battlezone
                 }) &&
                 overlappingArea > (player.width * player.height) / 2 &&
-                Math.random() < 0.1
+                Math.random() < 0.01
             ) {
                 gameTrigger.initiated = true
                 herbTrigger.initiated=true
                 if (herbTrigger.initiated){
-                    //deactivate current animation loop 
-                    //window.cancelAnimationFrame(animationID)
                     herbGame()
                 }
             }
@@ -413,7 +412,6 @@ function animate(){
                 }
             }
         }
-
     }
     
     //DETERMINE DIRECTION OF PLAYER MOVEMENT BASED ON KEY PRESS AND BOUNDARY DETECTIONS
@@ -442,7 +440,6 @@ function animate(){
         if (moving) {
             movables.forEach(movable => {
                 movable.position.y += 3
-                console.log(movable.position.y)
             })
         }
 
@@ -527,7 +524,17 @@ function animate(){
     }
 }//END ANIMATE FUNCTION
 
-
+async function main() {
+    console.log("Before sleep");
+    await sleep(2000); // Sleep for 2 seconds
+    console.log("After sleep [After 2 Seconds]");
+  }
+  
+  function sleep(time) {
+    return new Promise((resolve) => setTimeout(resolve, time));
+  }
+  
+  main();
 
 // function fishingGame(){
 

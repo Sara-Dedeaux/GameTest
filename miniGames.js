@@ -5,10 +5,9 @@ const largeBrowserDirections = document.getElementById("largeDispDir")
 const playBtn = document.getElementById("play")
 const returnBtn =  document.getElementById("return")
 const betBtn = document.getElementById("bet")
-const wormGameDiv = document.querySelector(".wormGame")
+const miniGameDiv = document.querySelector(".miniGame")
 const collectedWorms = document.getElementById("wormCollect")
-
-
+const useCloverBtn = document.getElementById("luck")
 
 
 //#region WORM GAME
@@ -74,7 +73,8 @@ const worm = new Sprite ({
     image: wormImg
 })
 
-
+// if(clover >= 1) useCloverBtn.classList.remove("d-none")
+//     else {useCloverBtn.classList.add("d-none") }
 
 //ESTABLISH WORM GAME VARIABLES
 let digOutcome = 4;
@@ -121,9 +121,12 @@ let wormCount = 0;
 
 //RETURN TO MAP FEATURE
 returnBtn.addEventListener("click", () => {
-    wormGameDiv.classList.add("d-none")
+    miniGameDiv.classList.add("d-none")
     gameTrigger.initiated = false
     wormTrigger.initiated = false
+    boatTrigger.initiated = false
+    treeTrigger.initiated = false
+    fishTrigger.initiated = false
     animate()
 })
 
@@ -150,7 +153,7 @@ function wormCatchGame() {
     //DRAW IMAGES FOR START OF GAME
     battleBackground.draw()
     shovel.draw();
-    wormGameDiv.classList.remove("d-none")
+    miniGameDiv.classList.remove("d-none")
     //MANIPULATE HTML ELEMENTS
     battleBackgroundImg.src = "img/ground-7855872_1280.png"
     mobileDirections.classList.remove("d-md-block", "d-sm-block", "d-lg-none")
@@ -158,27 +161,190 @@ function wormCatchGame() {
     collectedWorms.classList.remove("d-none")
     gameInstructions.innerHTML = "Watch out for frogs! They'll steal your worms!"
     playBtn.innerHTML = "Dig!"
+    returnBtn.classList.remove('display-none')
 }
+//#endregion
+
+//#region FLOWER GAME 
+
+const apiQuotes_url ="";
+
+async function fetchQuotesData(){
+    let quotesURL= `https://thesimpsonsquoteapi.glitch.me/quotes`
+    console.log(quotesURL)
+    let quotes;
+    let characters
+    
+    await fetch(quotesURL)
+    .then(response => response.json())
+    .then(data => {
+
+        console.log(data)
+        quotes = data[0].quote
+        console.log(quotes)
+
+        characters = data[0].character
+        console.log(characters)
+    })
+    .catch(error => console.log('Authorization failed : ' + error.message));
+    
+    gameInstructions.innerHTML = quotes + " - " + characters
+    setTimeout(() => {
+        gameInstructions.innerHTML = ""
+    }, 10000);
+     
+}
+
+   
+function flowerGame(){
+    console.log("flower game activated")
+    miniGameDiv.classList.remove("d-none")
+    returnBtn.classList.add("d-none")
+    fetchQuotesData()
+    
+}
+
+
+
 //#endregion
 
 //#region FISHING GAME
 
+const fishPoleImg = new Image();
+fishPoleImg.src = "img/fishing-rod-6856757_640medium.png"
+const fishPole = new Sprite ({
+    position: {
+        x: 300,
+        y: -100
+    },
+    image: fishPoleImg
+
+})
+
+
+const fishSchoolImg = new Image();
+fishSchoolImg.src = "img/fishing-154745_640.png"
+const fishSchool = new Sprite ({
+    position: {
+        x: 300,
+        y: 150
+    },
+    image: fishSchoolImg
+
+})
+
+const fishCaughtImg = new Image();
+fishCaughtImg.src = "img/frog-test.png"
+const fishCaught = new Sprite ({
+    position: {
+        x: 300,
+        y: 150
+    },
+    image: fishCaughtImg
+})
+
+const waterImg = new Image();
+waterImg.src = "img/underwater-2615376_1280.jpg"
+const water = new Sprite ({
+    position: {
+        x: 0,
+        y: 0
+    },
+    image: waterImg
+})
+
+const fishBtn = document.getElementById("fishBtn")
+const reelBtn = document.getElementById("reel")
+fishBtn.addEventListener("click", ()=> {
+    reelBtn.classList.remove("d-none")
+    console.log("click")
+    setTimeout(() => {
+        reelBtn.classList.add("d-none")
+    }, 1000);
+       setTimeout(() => {
+        reelBtn.classList.remove("d-none")
+    }, 300);
+})
+
+let reelOutcome = 0
+reelBtn.addEventListener("click", ()=> {
+    reelOutcome= Math.floor(Math.random() * 3) 
+    console.log(reelOutcome)
+    water.draw()
+    switch (reelOutcome) {
+        case 0:
+          console.log("caught a fish")
+            break;
+        case 1:
+          console.log("Lost your bait")
+            break;
+        case 2:
+            console.log("Caught a boot")
+            break;
+        default:
+        break;
+    }
+
+})
+
 function fishGame(){
-    console.log("fish game activated")
+console.log("fish game activated")
+    //DRAW IMAGES FOR START OF GAME
+    water.draw()
+    fishPole.draw();
+    miniGameDiv.classList.remove("d-none")
+    //MANIPULATE HTML ELEMENTS
+    mobileDirections.classList.remove("d-md-block", "d-sm-block", "d-lg-none")
+    largeBrowserDirections.classList.remove("d-lg-block"); 
+    collectedWorms.classList.remove("d-none")
+    gameInstructions.innerHTML = "Cast your line to catch a fish - Reel it in quick before the fish gets away!"
+    returnBtn.classList.remove('display-none')
+    playBtn.classList.add("d-none")
+    fishBtn.classList.remove("d-none")
 }
 
-function flowerGame(){
-    console.log(" flower game activated")
-}
 
 function boatGame(){
     console.log("boat game activated")
+    miniGameDiv.classList.remove("d-none")
+
 }
+
+let clover=0
+let cookingHerbs=0
+
+
 
 function herbGame(){
     console.log("herb game activated")
+    miniGameDiv.classList.remove("d-none")
+    returnBtn.classList.add("d-none")
+
+   const foragedItem = Math.floor(Math.random()*4)
+    console.log(foragedItem)
+    let herbPicked = true; 
+    
+    switch (foragedItem) {
+        case 1:
+            clover++
+            console.log(clover)
+
+            break;
+        case 2:
+            cookingHerbs++
+            console.log(cookingHerbs)
+            break;
+        default:
+            break;
+    }
+    
+
+
+
 }
 
 function treeGame(){
     console.log("tree game activated")
+    miniGameDiv.classList.remove("d-none")
+
 }

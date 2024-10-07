@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/bootstrap.css">
@@ -11,6 +12,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Changa:wght@200..800&display=swap" rel="stylesheet">
+    <header ></header>
+   
+
     
     <head>
     <meta charset="UTF-8">
@@ -66,8 +70,9 @@
             </div>
             <div class="inventory">
                 <p id="wormCollect" class="d-none">Worms collected: </p>
+                <p id="cloverCollect">Clovers collected:</p>
             </div>
-            <div class="wormGame container d-none ">
+            <div class="miniGame container d-none ">
                 
                 <div class="row">
                     <div class="col-4">
@@ -77,11 +82,15 @@
                         <button id="play"></button>
                     </div>
                     <div class="col-4">
+                        <button id="luck" class="d-none">Use Clover</button>
                         <button id="bet" class="d-none">Double or Nothing</button>
+                        
                     </div>
                 </div>
             </div>
             <div class="fishingGame">
+                <button id="fishBtn" class="d-none">Cast</button>
+                <button id="reel" class="d-none">Reel!</button>
             </div>
         </div>
     </div>
