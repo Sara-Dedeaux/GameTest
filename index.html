@@ -27,7 +27,7 @@
     <div class="container container-fluid text-center ">
         <br>
         <div class="row gameTitle">
-            <h1>Game Name</h1>
+            <h1>DayDream Isle</h1>
         </div>
         <div class="row d-block d-sm-none">
             <p>Rotate to landscape or expand browser size to play</p>
@@ -69,21 +69,24 @@
                 <p id="largeDispDir" class="d-none d-lg-block">Controls: WASD </p>
             </div>
             <div class="inventory">
+                <p id="cloverCollect" class="d-none"></p>
+                <p id = "herbCollect" class="d-none"></p>
                 <p id="wormCollect" class="d-none">Worms collected: </p>
-                <p id="cloverCollect">Clovers collected:</p>
+                <p id="fishCollect" class="d-none">Fish Caught:</p>
             </div>
             <div class="miniGame container d-none ">
                 
                 <div class="row">
                     <div class="col-4">
                         <button id="return">Back to Map</button>
-                    </div>
-                    <div class="col-4">
-                        <button id="play"></button>
-                    </div>
-                    <div class="col-4">
                         <button id="luck" class="d-none">Use Clover</button>
+                    </div>
+                    <div class="col-4 wormGame d-none">
+                        <!-- <button id="play"></button> -->
+                        <button id ="dig" class="d-none">DIG!</button>
                         <button id="bet" class="d-none">Double or Nothing</button>
+                    </div>
+                    <div class="col-4">
                         
                     </div>
                 </div>
