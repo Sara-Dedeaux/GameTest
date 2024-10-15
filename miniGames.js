@@ -13,7 +13,15 @@ const wormGameDiv=document.querySelector(".wormGame")
 const collectedFish = document.getElementById("fishCollect")
 const collectedClover = document.getElementById("cloverCollect")
 const collectedHerbs = document.getElementById("herbCollect")
+const forestGameDiv = document.getElementById("forestGame")
+const forageBtn = document.getElementById("forageBtn")
+const cookFishBtn = document.getElementById("cookFish")
+const collectedTinder = document.getElementById("tinderCollect")
+const collectedLogs = document.getElementById("logCollect") 
+const collectedFlint = document.getElementById("flintcollected")
+const fishGameDiv = document.querySelector(".fishingGame")
 
+let clover=0
 let cloverUsed = false; 
 useCloverBtn.addEventListener("click", () => {
     clover--
@@ -148,6 +156,16 @@ let wormCount = 0;
 //RETURN TO MAP FEATURE
 returnBtn.addEventListener("click", () => {
     miniGameDiv.classList.add("d-none")
+    forestGameDiv.classList.add('d-none')
+    wormGameDiv.classList.add('d-none')
+    fishGameDiv.classList.add('d-none')
+    collectedFish.classList.add('d-none')
+    collectedFlint.classList.add('d-none')
+    collectedHerbs.classList.add('d-none')
+    collectedLogs.classList.add('d-none')
+    collectedTinder.classList.add('d-none')
+    gameInstructions.innerHTML = "Frolic through the flowers and grasses to see what you can find!"
+    
     gameTrigger.initiated = false
     wormTrigger.initiated = false
     boatTrigger.initiated = false
@@ -193,6 +211,13 @@ function wormCatchGame() {
     wormPlayBtn.classList.remove("d-none")
     returnBtn.classList.remove('d-none')
     wormGameDiv.classList.remove('d-none')
+    forestGameDiv.classList.add("d-none")
+    collectedFish.classList.add('d-none')
+    collectedFlint.classList.add('d-none')
+    collectedLogs.classList.add('d-none')
+    collectedTinder.classList.add('d-none')
+    forageBtn.classList.add('d-none')
+
     
     if (wormCount>0) {
         gameInstructions.innerHTML = "Watch out for frogs! They'll steal your worms!"
@@ -334,6 +359,7 @@ reelBtn.addEventListener("click", ()=> {
           wormCount--
           fishCount++
           fishCaught.draw();
+          gameInstructions.innerHTML = "You caught a fish!"
           collectedWorms.innerHTML = "Worms Collected: " + wormCount
           collectedFish.innerHTML = `Fish Collected: ${fishCount}`
             break;
@@ -341,11 +367,13 @@ reelBtn.addEventListener("click", ()=> {
           console.log("Lost your bait")
           fishSchool.draw();
           wormCount--
+          gameInstructions.innerHTML = "Fish Got Your Bait!"
           collectedWorms.innerHTML = "Worms Collected: " + wormCount
             break;
         case 2:
             console.log("Caught a boot")
             bootCaught.draw();
+            gameInstructions.innerHTML = "Caught a Boot"
             collectedWorms.innerHTML = "Worms Collected: " + wormCount
             break;
         default:
@@ -382,8 +410,17 @@ function fishGame(){
     betBtn.classList.add("d-none")
     wormGameDiv.classList.add("d-none")
     collectedFish.classList.remove("d-none")
+    forestGameDiv.classList.add("d-none")   
+    collectedFlint.classList.add('d-none')
+    collectedHerbs.classList.add('d-none')
+    collectedLogs.classList.add('d-none')
+    collectedTinder.classList.add('d-none')
+    forageBtn.classList.add('d-none')
+    fishGameDiv.classList.remove('d-none')
+
+
     
-    if (wormCount>0) {
+    if (wormCount>=0) {
         fishBtn.classList.remove("d-none")
         gameInstructions.innerHTML = "Cast your line to catch a fish - Reel it in quick before the fish gets away!"
       
@@ -395,6 +432,8 @@ function fishGame(){
     
 }
 
+//#endregion
+
 
 function boatGame(){
     console.log("boat game activated")
@@ -402,7 +441,8 @@ function boatGame(){
 
 }
 
-let clover=0
+
+//#region HERB GAME
 let cookingHerbs=0
 
 
@@ -410,6 +450,7 @@ function herbGame(){
     console.log("herb game activated")
     miniGameDiv.classList.remove("d-none")
     returnBtn.classList.add("d-none")
+    
     
     const foragedItem = Math.floor(Math.random()*3)
     console.log(foragedItem)
@@ -419,6 +460,7 @@ function herbGame(){
             collectedClover.classList.remove("d-none")
             clover++
             collectedClover.innerHTML = `Clovers Collected: ${clover}`
+            gameInstructions.innerHTML = 'You found a 4 leaf clover! Use them for goodluck in your adventures!'
             
             console.log(clover)
             
@@ -429,18 +471,180 @@ function herbGame(){
             cookingHerbs++
             console.log(cookingHerbs)
             collectedHerbs.innerHTML = `Cooking Herbs Collected: ${cookingHerbs}`
+            gameInstructions.innerHTML = 'You found cooking herbs! I bet it would make the fish taste great!'
+
             break;
         default:
             break;
     }
     
-
-
-
 }
+
+//#endregion
+
+//#region FOREST GAME
+
+let canBuildFire= false; 
+let tinderCount = 0;
+let logCount = 0;
+let flintCount = 0;
+
+
+const forestImg = new Image();
+forestImg.src = "img/evergreen-2025158_1280.png"
+const forest = new Sprite ({
+    position: {
+        x: 0,
+        y: 0
+    },
+    image: forestImg
+})
+
+const logsImg = new Image();
+logsImg.src = "img/logs.png"
+const logs = new Sprite ({
+    position: {
+        x: 300,
+        y: 150
+    },
+    image: logsImg
+})
+
+flintImg = new Image();
+flintImg.src = "img/rock.png"
+const flint = new Sprite ({
+    position: {
+        x: 300,
+        y: 150
+    },
+    image: flintImg
+})
+const fireImg = new Image();
+fireImg.src = "img/fire.png"
+const fire = new Sprite ({
+    position: {
+        x: 300,
+        y: 150
+    },
+    image: fireImg
+})
+const tinderImg = new Image();
+tinderImg.src = "img/tender.png"
+const tinder = new Sprite ({
+    position: {
+        x: 300,
+        y: 150
+    },
+    image: tinderImg
+})
+
 
 function treeGame(){
     console.log("tree game activated")
     miniGameDiv.classList.remove("d-none")
 
+    //DRAW IMAGES FOR START OF GAME
+    forest.draw()
+    miniGameDiv.classList.remove("d-none")
+    //MANIPULATE HTML ELEMENTS
+    mobileDirections.classList.remove("d-md-block", "d-sm-block", "d-lg-none")
+    largeBrowserDirections.classList.remove("d-lg-block"); 
+    collectedWorms.classList.add("d-none")
+    returnBtn.classList.remove('d-none')
+    wormPlayBtn.classList.add("d-none")
+    betBtn.classList.add("d-none")
+    wormGameDiv.classList.add("d-none")
+    collectedFish.classList.remove("d-none")
+    forageBtn.classList.remove("d-none")
+    collectedFlint.classList.remove('d-none')
+    collectedLogs.classList.remove('d-none')
+    collectedTinder.classList.remove('d-none')
+    fishBtn.classList.add('d-none')
+    useCloverBtn.classList.add('d-none')
+    forestGameDiv.classList.remove('d-none')
+    collectedHerbs.classList.remove('d-none')
+    gameInstructions.innerHTML = "Forage to find materials to build a fire!"
 }
+
+forageBtn.addEventListener("click", ()=> {
+    const forestItem = Math.floor(Math.random()*3)
+    console.log(forestItem)
+    switch (forestItem) {
+        case 0:
+            forest.draw()
+            logs.draw(); 
+            logCount++
+            collectedLogs.innerHTML = `Log bundles: ${logCount}`
+            if (fishCount>0 && cookingHerbs>0 && logCount>0 && tinderCount>0 && flintCount>0) {
+                cookFishBtn.classList.remove('d-none')
+            }
+            else {
+                cookFishBtn.classList.add('d-none')
+            }
+            
+            break;
+        case 1:
+            forest.draw()
+            flint.draw(); 
+            flintCount++
+            collectedFlint.innerHTML = `Flint: ${flintCount} `
+            if (fishCount>0 && cookingHerbs>0 && logCount>0 && tinderCount>0 && flintCount>0) {
+                cookFishBtn.classList.remove('d-none')
+            }
+            else {
+                cookFishBtn.classList.add('d-none')
+            }
+            break;
+        case 2:
+            forest.draw()
+            tinder.draw(); 
+            tinderCount++
+            collectedTinder.innerHTML = `Tinder: ${tinderCount}`
+            if (fishCount>0 && cookingHerbs>0 && logCount>0 && tinderCount>0 && flintCount>0) {
+                cookFishBtn.classList.remove('d-none')
+            }
+            else {
+                cookFishBtn.classList.add('d-none')
+            }
+            break;
+            default: 
+            break; 
+            
+        }
+      
+    })
+
+cookFishBtn.addEventListener("click", ()=> {
+    fire.draw(); 
+    fishCount--
+    cookingHerbs--
+    flintCount--
+    tinderCount--
+    logCount--
+     collectedTinder.innerHTML = `Tinder: ${tinderCount}`
+     collectedFlint.innerHTML = `Flint: ${flintCount} `
+     collectedLogs.innerHTML = `Log bundles: ${logCount}`
+     collectedFish.innerHTML = `Fish collected: ${fishCount}`
+     collectedHerbs.innerHTML = `Herbs Collected: ${cookingHerbs}`
+
+
+
+    if (fishCount>0 && cookingHerbs>0 && logCount>0 && tinderCount>0 && flintCount>0){
+        cookFishBtn.classList.remove('d-none')
+    }
+    else {cookFishBtn.classList.add('d-none')}
+})
+
+if (fishCount > 0 && cookingHerbs > 0 && canBuildFire === true ) {
+    cookFishBtn.classList.remove("d-none")
+   
+ }else {
+     cookFishBtn.classList.add("d-none");
+     gameInstructions.innerHTML = "You must collect fish, herbs, tinder, logs, and flint to cook a fish."
+
+ }
+
+
+
+
+//#endregion
