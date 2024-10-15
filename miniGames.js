@@ -480,6 +480,13 @@ function treeGame(){
     forestGameDiv.classList.remove('d-none')
     collectedHerbs.classList.remove('d-none')
     gameInstructions.innerHTML = "Forage to find materials to build a fire!"
+
+    if (fishCount > 0 && cookingHerbs > 0 && canBuildFire === true ) {
+        cookFishBtn.classList.remove("d-none")
+    }else {
+         cookFishBtn.classList.add("d-none");
+         gameInstructions.innerHTML = "You must collect fish, herbs, tinder, logs, and flint to cook a fish."
+    }
 }
 
 forageBtn.addEventListener("click", ()=> {
@@ -545,12 +552,7 @@ cookFishBtn.addEventListener("click", ()=> {
     else {cookFishBtn.classList.add('d-none')}
 })
 
-if (fishCount > 0 && cookingHerbs > 0 && canBuildFire === true ) {
-    cookFishBtn.classList.remove("d-none")
-}else {
-     cookFishBtn.classList.add("d-none");
-     gameInstructions.innerHTML = "You must collect fish, herbs, tinder, logs, and flint to cook a fish."
-    }
+
 //#endregion
 
 //#region BOAT GAME
