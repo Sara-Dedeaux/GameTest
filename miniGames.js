@@ -21,6 +21,26 @@ const collectedLogs = document.getElementById("logCollect")
 const collectedFlint = document.getElementById("flintcollected")
 const fishGameDiv = document.querySelector(".fishingGame")
 
+//RETURN TO MAP FEATURE
+returnBtn.addEventListener("click", () => {
+    miniGameDiv.classList.add("d-none")
+    forestGameDiv.classList.add('d-none')
+    wormGameDiv.classList.add('d-none')
+    fishGameDiv.classList.add('d-none')
+    collectedFish.classList.add('d-none')
+    collectedFlint.classList.add('d-none')
+    collectedLogs.classList.add('d-none')
+    collectedTinder.classList.add('d-none')
+    gameInstructions.innerHTML = "Frolic through the flowers and grasses to see what you can find!"
+    
+    gameTrigger.initiated = false
+    wormTrigger.initiated = false
+    boatTrigger.initiated = false
+    treeTrigger.initiated = false
+    fishTrigger.initiated = false
+    animate()
+})
+
 let clover=0
 let cloverUsed = false; 
 useCloverBtn.addEventListener("click", () => {
@@ -31,7 +51,6 @@ useCloverBtn.addEventListener("click", () => {
         useCloverBtn.classList.add("d-none")
     } 
     cloverUsed = true; 
-
 })
 
 
@@ -98,8 +117,6 @@ const worm = new Sprite ({
     image: wormImg
 })
 
-
-
 //ESTABLISH WORM GAME VARIABLES
 let digOutcome = 4;
 let wormCount = 0; 
@@ -111,34 +128,24 @@ let wormCount = 0;
         digOutcome = 2
         cloverUsed = false; 
     }
-    console.log(digOutcome)
     battleBackground.draw()
     switch (digOutcome) {
         case 0:
             dirt.draw(); 
-            console.log("dirt")
-            console.log("wormcount:" + wormCount)
             collectedWorms.innerHTML = "Worms Collected: " + wormCount
             break;
         case 1:
             frog.draw();
-            console.log("frog")
             wormCount --
             if (wormCount <= 0 ) wormCount = 0;
             if (wormCount < 2) betBtn.classList.add("d-none")
-                console.log("wormcount:" + wormCount)
              collectedWorms.innerHTML = "Worms Collected: " + wormCount
-
-
             break;
         case 2:
             worm.draw();
-            console.log("worm")
             wormCount ++
-            console.log("wormcount:" + wormCount)
             collectedWorms.innerHTML = "Worms Collected: " + wormCount
-
-            break;
+           break;
         default:
         break;
     }
@@ -147,35 +154,13 @@ let wormCount = 0;
     if ( wormCount >= 2) betBtn.classList.remove("d-none")
     if (clover>0) {
         useCloverBtn.classList.remove("d-none")
-        
     }else {
         useCloverBtn.classList.add("d-none")
     }
 })
 
-//RETURN TO MAP FEATURE
-returnBtn.addEventListener("click", () => {
-    miniGameDiv.classList.add("d-none")
-    forestGameDiv.classList.add('d-none')
-    wormGameDiv.classList.add('d-none')
-    fishGameDiv.classList.add('d-none')
-    collectedFish.classList.add('d-none')
-    collectedFlint.classList.add('d-none')
-    collectedHerbs.classList.add('d-none')
-    collectedLogs.classList.add('d-none')
-    collectedTinder.classList.add('d-none')
-    gameInstructions.innerHTML = "Frolic through the flowers and grasses to see what you can find!"
-    
-    gameTrigger.initiated = false
-    wormTrigger.initiated = false
-    boatTrigger.initiated = false
-    treeTrigger.initiated = false
-    fishTrigger.initiated = false
-    animate()
-})
-
- //GAMBLE - 1 OF 2 IMGS DISPLAYED - FROG: WORMS = 0, WORM: WORMS DOUBLED
- betBtn.addEventListener("click", ()=> {
+//GAMBLE - 1 OF 2 IMGS DISPLAYED - FROG: WORMS = 0, WORM: WORMS DOUBLED
+betBtn.addEventListener("click", ()=> {
     let betOutcome = Math.floor(Math.random()*2)
 
     if (cloverUsed === true){
@@ -197,7 +182,6 @@ returnBtn.addEventListener("click", () => {
     if (wormCount < 2) betBtn.classList.add("d-none")
 })
 
-
 function wormCatchGame() {
     //DRAW IMAGES FOR START OF GAME
     battleBackground.draw()
@@ -218,38 +202,29 @@ function wormCatchGame() {
     collectedTinder.classList.add('d-none')
     forageBtn.classList.add('d-none')
 
-    
     if (wormCount>0) {
         gameInstructions.innerHTML = "Watch out for frogs! They'll steal your worms!"
         
     } else {
         gameInstructions.innerHTML = "Use your worms as bait to catch fish! Explore the map to find a fishing hole."
     }
-
 }
 //#endregion
 
 //#region FLOWER GAME 
-
 const apiQuotes_url ="";
 
 async function fetchQuotesData(){
     let quotesURL= `https://thesimpsonsquoteapi.glitch.me/quotes`
-    console.log(quotesURL)
     let quotes;
     let characters
     
     await fetch(quotesURL)
     .then(response => response.json())
     .then(data => {
-
-        console.log(data)
         quotes = data[0].quote
-        console.log(quotes)
-
         characters = data[0].character
-        console.log(characters)
-    })
+   })
     .catch(error => console.log('Authorization failed : ' + error.message));
     
     gameInstructions.innerHTML = quotes + " - " + characters
@@ -259,21 +234,14 @@ async function fetchQuotesData(){
      
 }
 
-   
 function flowerGame(){
-    console.log("flower game activated")
     miniGameDiv.classList.remove("d-none")
     returnBtn.classList.add("d-none")
     fetchQuotesData()
-    
 }
-
-
-
 //#endregion
 
 //#region FISHING GAME
-
 let fishCount=0;
 
 const fishPoleImg = new Image();
@@ -284,10 +252,7 @@ const fishPole = new Sprite ({
         y: -100
     },
     image: fishPoleImg
-
 })
-
-
 const fishSchoolImg = new Image();
 fishSchoolImg.src = "img/fishing-154745_640.png"
 const fishSchool = new Sprite ({
@@ -296,9 +261,7 @@ const fishSchool = new Sprite ({
         y: 150
     },
     image: fishSchoolImg
-
 })
-
 const fishCaughtImg = new Image();
 fishCaughtImg.src = "img/caughtFishSM.png"
 const fishCaught = new Sprite ({
@@ -308,7 +271,6 @@ const fishCaught = new Sprite ({
     },
     image: fishCaughtImg
 })
-
 const bootCaughtImg = new Image();
 bootCaughtImg.src = "img/boot.png"
 const bootCaught = new Sprite ({
@@ -318,7 +280,6 @@ const bootCaught = new Sprite ({
     },
     image: bootCaughtImg
 })
-
 const waterImg = new Image();
 waterImg.src = "img/underwater-2615376_1280.jpg"
 const water = new Sprite ({
@@ -333,7 +294,6 @@ const fishBtn = document.getElementById("fishBtn")
 const reelBtn = document.getElementById("reel")
 fishBtn.addEventListener("click", ()=> {
     reelBtn.classList.remove("d-none")
-    console.log("click")
     setTimeout(() => {
         reelBtn.classList.add("d-none")
     }, 1000);
@@ -345,17 +305,13 @@ fishBtn.addEventListener("click", ()=> {
 let reelOutcome = 0
 reelBtn.addEventListener("click", ()=> {
     reelOutcome= Math.floor(Math.random() * 3) 
-    console.log(reelOutcome)
     if (cloverUsed === true){
         reelOutcome = 0;
         cloverUsed = false;
     }
-    console.log(reelOutcome)
-    console.log(cloverUsed)
     water.draw()
     switch (reelOutcome) {
         case 0:
-          console.log("caught a fish")
           wormCount--
           fishCount++
           fishCaught.draw();
@@ -364,14 +320,12 @@ reelBtn.addEventListener("click", ()=> {
           collectedFish.innerHTML = `Fish Collected: ${fishCount}`
             break;
         case 1:
-          console.log("Lost your bait")
           fishSchool.draw();
           wormCount--
           gameInstructions.innerHTML = "Fish Got Your Bait!"
           collectedWorms.innerHTML = "Worms Collected: " + wormCount
             break;
         case 2:
-            console.log("Caught a boot")
             bootCaught.draw();
             gameInstructions.innerHTML = "Caught a Boot"
             collectedWorms.innerHTML = "Worms Collected: " + wormCount
@@ -382,20 +336,15 @@ reelBtn.addEventListener("click", ()=> {
     if (wormCount<1){
         fishBtn.classList.add("d-none")  
     } 
-
     if (clover>0) {
         useCloverBtn.classList.remove("d-none")
         
     }else {
         useCloverBtn.classList.add("d-none")
     }
-        
-    
-
 })
 
 function fishGame(){
-    console.log("fish game activated")
     //DRAW IMAGES FOR START OF GAME
     water.draw()
     fishPole.draw();
@@ -405,7 +354,6 @@ function fishGame(){
     largeBrowserDirections.classList.remove("d-lg-block"); 
     collectedWorms.classList.remove("d-none")
     returnBtn.classList.remove('d-none')
-    fishBtn.classList.remove("d-none")
     wormPlayBtn.classList.add("d-none")
     betBtn.classList.add("d-none")
     wormGameDiv.classList.add("d-none")
@@ -417,78 +365,49 @@ function fishGame(){
     collectedTinder.classList.add('d-none')
     forageBtn.classList.add('d-none')
     fishGameDiv.classList.remove('d-none')
-
-
-    
-    if (wormCount>=0) {
+   
+    if (wormCount>=1) {
         fishBtn.classList.remove("d-none")
         gameInstructions.innerHTML = "Cast your line to catch a fish - Reel it in quick before the fish gets away!"
       
     }else {
         fishBtn.classList.add("d-none");
         gameInstructions.innerHTML = "You must collect worms to use as bait - explore the map to find a worm pit!"
-
     }
-    
 }
-
 //#endregion
-
-
-function boatGame(){
-    console.log("boat game activated")
-    miniGameDiv.classList.remove("d-none")
-
-}
-
 
 //#region HERB GAME
 let cookingHerbs=0
-
-
 function herbGame(){
-    console.log("herb game activated")
     miniGameDiv.classList.remove("d-none")
     returnBtn.classList.add("d-none")
-    
-    
+
     const foragedItem = Math.floor(Math.random()*3)
-    console.log(foragedItem)
-    
     switch (foragedItem) {
         case 1:
             collectedClover.classList.remove("d-none")
             clover++
             collectedClover.innerHTML = `Clovers Collected: ${clover}`
             gameInstructions.innerHTML = 'You found a 4 leaf clover! Use them for goodluck in your adventures!'
-            
-            console.log(clover)
-            
             break;
-         
         case 2:
             collectedHerbs.classList.remove("d-none")
             cookingHerbs++
-            console.log(cookingHerbs)
             collectedHerbs.innerHTML = `Cooking Herbs Collected: ${cookingHerbs}`
             gameInstructions.innerHTML = 'You found cooking herbs! I bet it would make the fish taste great!'
-
             break;
         default:
-            break;
+        break;
     }
-    
 }
-
 //#endregion
 
 //#region FOREST GAME
-
 let canBuildFire= false; 
 let tinderCount = 0;
 let logCount = 0;
 let flintCount = 0;
-
 
 const forestImg = new Image();
 forestImg.src = "img/evergreen-2025158_1280.png"
@@ -499,7 +418,6 @@ const forest = new Sprite ({
     },
     image: forestImg
 })
-
 const logsImg = new Image();
 logsImg.src = "img/logs.png"
 const logs = new Sprite ({
@@ -509,7 +427,6 @@ const logs = new Sprite ({
     },
     image: logsImg
 })
-
 flintImg = new Image();
 flintImg.src = "img/rock.png"
 const flint = new Sprite ({
@@ -540,7 +457,6 @@ const tinder = new Sprite ({
 
 
 function treeGame(){
-    console.log("tree game activated")
     miniGameDiv.classList.remove("d-none")
 
     //DRAW IMAGES FOR START OF GAME
@@ -568,7 +484,6 @@ function treeGame(){
 
 forageBtn.addEventListener("click", ()=> {
     const forestItem = Math.floor(Math.random()*3)
-    console.log(forestItem)
     switch (forestItem) {
         case 0:
             forest.draw()
@@ -581,7 +496,6 @@ forageBtn.addEventListener("click", ()=> {
             else {
                 cookFishBtn.classList.add('d-none')
             }
-            
             break;
         case 1:
             forest.draw()
@@ -609,9 +523,7 @@ forageBtn.addEventListener("click", ()=> {
             break;
             default: 
             break; 
-            
         }
-      
     })
 
 cookFishBtn.addEventListener("click", ()=> {
@@ -621,13 +533,11 @@ cookFishBtn.addEventListener("click", ()=> {
     flintCount--
     tinderCount--
     logCount--
-     collectedTinder.innerHTML = `Tinder: ${tinderCount}`
-     collectedFlint.innerHTML = `Flint: ${flintCount} `
-     collectedLogs.innerHTML = `Log bundles: ${logCount}`
-     collectedFish.innerHTML = `Fish collected: ${fishCount}`
-     collectedHerbs.innerHTML = `Herbs Collected: ${cookingHerbs}`
-
-
+    collectedTinder.innerHTML = `Tinder: ${tinderCount}`
+    collectedFlint.innerHTML = `Flint: ${flintCount} `
+    collectedLogs.innerHTML = `Log bundles: ${logCount}`
+    collectedFish.innerHTML = `Fish collected: ${fishCount}`
+    collectedHerbs.innerHTML = `Herbs Collected: ${cookingHerbs}`
 
     if (fishCount>0 && cookingHerbs>0 && logCount>0 && tinderCount>0 && flintCount>0){
         cookFishBtn.classList.remove('d-none')
@@ -637,14 +547,95 @@ cookFishBtn.addEventListener("click", ()=> {
 
 if (fishCount > 0 && cookingHerbs > 0 && canBuildFire === true ) {
     cookFishBtn.classList.remove("d-none")
-   
- }else {
+}else {
      cookFishBtn.classList.add("d-none");
      gameInstructions.innerHTML = "You must collect fish, herbs, tinder, logs, and flint to cook a fish."
+    }
+//#endregion
 
- }
+//#region BOAT GAME
+const oceanImg = new Image();
+oceanImg.src = "img/sea-5495381_1280.jpg"
+const ocean = new Sprite ({
+    position: {
+        x: 0,
+        y: 0
+    },
+    image: oceanImg
+})
+const birdImg = new Image();
+birdImg.src = "img/seagull-6695728_1280.jpg"
+const bird = new Sprite ({
+    position: {
+        x: 0,
+        y: 0
+    },
+    image: birdImg
+})
+const turtleImg = new Image();
+turtleImg.src = "img/sea-2361247_1280.jpg"
+const turtle = new Sprite ({
+    position: {
+        x: 0,
+        y: 0
+    },
+    image: turtleImg
+})
+const dolphinImg = new Image();
+dolphinImg.src = "img/dolphin-2691864_1280.jpg"
+const dolphin = new Sprite ({
+    position: {
+        x: 0,
+        y: 0
+    },
+    image: dolphinImg
+})
+const whaleImg = new Image();
+whaleImg.src = "img/marine-7971210_1280.jpg"
+const whale = new Sprite ({
+    position: {
+        x: 0,
+        y: 0
+    },
+    image: whaleImg
+})
+const islandImg = new Image();
+islandImg.src = "img/island-2482200_1280.jpg"
+const island = new Sprite ({
+    position: {
+        x: 0,
+        y: 0
+    },
+    image: islandImg
+})
 
+function boatGame(){
+    miniGameDiv.classList.remove("d-none")
+    returnBtn.classList.remove("d-none")
+    gameInstructions.innerHTML = 'See what you can see!'
 
-
-
+    const oceanView = Math.floor(Math.random()*6)
+    switch (oceanView) {
+        case 0:
+            bird.draw()
+            break;
+        case 1:
+            ocean.draw()
+            break; 
+        case 2:
+            turtle.draw()
+            break;
+        case 3:
+            dolphin.draw();
+            break; 
+        case 4:
+            island.draw();
+            break;
+        case 5:
+             whale.draw();
+             break;
+        default: 
+        break; 
+    }
+}
 //#endregion
