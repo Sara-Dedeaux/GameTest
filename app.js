@@ -1,9 +1,8 @@
 //BUG LIST
-// If capLock is on controls do not work
-
-//TO DO LIST
-
-
+    // If capLock is on controls do not work
+    //Need to make boundary trigger more smooth to move in and out with ease 
+    //Worm game background shows on left side after returning to map until map is moved
+    //would like to resize html elements and divs to show without scrolling
 
 //ESTABLISH AND FORMAT CANVAS ELEMENT
 const canvas = document.querySelector('canvas');
@@ -137,15 +136,9 @@ const keys = {
 
 //MOBILE BUTTONS
 const upBtn= document.getElementById("up"); 
-console.log(upBtn)
 const leftBtn=document.getElementById("left");
-console.log(leftBtn)
 const rightBtn=document.getElementById("right");
-console.log(rightBtn)
 const downBtn=document.getElementById("down");
-console.log(downBtn)
-
-
 
 //ESTABLISH AN ARRAY SO MAP CAN BE FORMATTED. THESE ITEMS SHOULD MOVE AS ONE TO GIVE THE ILLUSION THAT THE PLAYER IS MOVING
 const movables = [background, ...boundaries, ...wormZones, ...fishZones, ...flowerZones, ...boatZones, ...herbZones, ...treeZones ]
@@ -182,7 +175,7 @@ const gameTrigger = {
 function animate(){
    //CREATES AN INFINITE LOOP TO GIVE THE ILLUSION OF MOVEMENT -
    const animationID = window.requestAnimationFrame(animate)
-   console.log(animationID)
+    //console.log(animationID)
 
    //DRAW MAP, ZONE BOUNDARIES, AND PLAYER ON CANVAS
     background.draw()
@@ -524,48 +517,11 @@ function animate(){
     }
 }//END ANIMATE FUNCTION
 
-async function main() {
-    console.log("Before sleep");
-    await sleep(2000); // Sleep for 2 seconds
-    console.log("After sleep [After 2 Seconds]");
-  }
-  
-  function sleep(time) {
-    return new Promise((resolve) => setTimeout(resolve, time));
-  }
-  
-  main();
-
-// function fishingGame(){
-
-   
-
-//     //draw background for fish game
-//     pond.draw()
-//     //use worms to fish
-
-//     //create list of fish/ items to catch 
-
-//     //create game option to forage herbs, gather wood, gather flint rock, to build a fire and cook the fish
-
-//     //decide how many times a worm can be used as bait and the probability of outCome - if you forage a lucky clover your odds are better in a game - how long does the luck last? number of games played or chances taken?
-
-//     //enery levels decrease with each game played - energy increases with food - different games will require different energy levels - when at 0 energy the only activity you can do is forage for herbs for food to increase energy levels
-
-// }
-
-
-
 //MOBILE CONTROL CHECKS
 let upBtnPressed; 
 let leftBtnPressed;
 let rightBtnPressed; 
 let downBtnPressed; 
-
-
-
-
-
 
 //ARROW CONTROLS - TOUCH EVENTS 
 upBtn.addEventListener("touchstart", (event) => {
@@ -638,7 +594,6 @@ downBtn.addEventListener("mouseup", () => {
     downBtnPressed= false; 
 })
 
-
     
 //ESTABLISH CONTROLS FOR FULL-SCREEN
 let lastKey = ''
@@ -690,9 +645,6 @@ window.addEventListener('keyup', (e)=>{
     }
 
 })
-
-
-
 
 animate()
 
